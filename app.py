@@ -1,7 +1,16 @@
 import os
+import random
+from string import ascii_uppercase
 from pathlib import Path
 
-from flask import Flask, redirect, render_template, url_for
+from flask import (
+    Flask,
+    redirect,
+    render_template,
+    url_for,
+    session,
+    request
+)
 from flask_bcrypt import Bcrypt
 from flask_login import (
     LoginManager,
@@ -12,6 +21,12 @@ from flask_login import (
     current_user
 )
 from flask_sqlalchemy import SQLAlchemy
+from flask_socketio import (
+    join_room,
+    leave_room,
+    send,
+    SocketIO
+)
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
@@ -24,11 +39,23 @@ if not app.config["SECRET_KEY"]:
 database_path = Path(__file__).resolve().parent / "database.db"
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{database_path}"
 
+socketio = SocketIO(app)
+
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
+
+rooms = {}
+
+def generate_unique_code(length):
+    while True:
+        code = ""
+        for _ in range(length):
+            code += random.choice(ascii_uppercase)
+        if code not in rooms:
+            return code
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -75,11 +102,6 @@ def home():
         return redirect(url_for("chatroom"))
     return redirect(url_for("login"))
 
-@app.route('/chatroom', methods=['GET', 'POST'])
-@login_required
-def chatroom():
-    return render_template('chatroom.html')
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -114,5 +136,93 @@ def register():
 
     return render_template('register.html', form=form)
 
+@app.route('/chatroom', methods=['GET', 'POST'])
+@login_required
+def chatroom():
+    if request.method == "POST":
+        name = current_user.username
+        code = request.form.get("code")
+        join = request.form.get("join", False)
+        create = request.form.get("create", False)
+
+        # TODO: Update to send error if we cant access username?
+        if not name:
+            print("ERROR: Could not retrieve username")
+            return redirect(url_for('login'))
+        if join != False and not code:
+            return render_template(
+                'chatroom.html', error="Please enter a room code", code=code, name=name
+            )
+
+        room = code
+        if create != False:
+            room = generate_unique_code(4);
+            rooms[room] = {"members": 0, "messages": []}
+        elif code not in rooms:
+            return render_template(
+                'chatroom.html', error="Room does not exist", code=code, name=name
+            )
+
+        session["room"] = room
+        return redirect(url_for("room", code=room))
+
+    session.pop("room", None)
+    return render_template('chatroom.html')
+
+@app.route('/chatroom/<code>')
+@login_required
+def room(code):
+    room = session.get("room")
+    if room is None or current_user.username is None or room not in rooms:
+        return redirect(url_for("chatroom"))
+    return render_template(
+        'room.html',
+        code=room,
+        messages=rooms[room]["messages"]
+    )
+
+@socketio.on("message")
+def message(data):
+    room = session.get("room")
+    if room not in rooms:
+        return
+
+    content = {
+        "name": current_user.username,
+        "message": data["data"]
+    }
+    send(content, to=room)
+    rooms[room]["messages"].append(content)
+    print(f"{current_user.username} said: {data['data']}")
+
+@socketio.on("connect")
+def connect(auth):
+    room = session.get("room")
+
+    if not room or not current_user.is_authenticated:
+        return
+    if room not in rooms:
+        leave_room(room)
+        return
+
+    join_room(room)
+    send({"name": current_user.username, "message": "has entered the room"}, to=room)
+    rooms[room]["members"] += 1
+    print(f"{current_user.username} joined room {room}")
+
+@socketio.on("disconnect")
+def disconnect():
+    room = session.get("room")
+    name = current_user.username
+    leave_room(room)
+
+    if room in rooms:
+        rooms[room]["members"] -= 1
+        if rooms[room]["members"] <= 0:
+            del rooms[room]
+
+    send({"name": name, "message": "has left the room"}, to=room)
+    print(f"{name} left room {room}")
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    socketio.run(app, debug=True)
