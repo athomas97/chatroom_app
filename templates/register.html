@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
     <h1>Register Page</h1>
     <form method="POST" action="">
         {{ form.hidden_tag() }}
@@ -13,6 +8,6 @@
         {{ form.password }}
         {{ form.submit }}
     </form>
-    <a href="{{url_for('login')}}">Already have an account? Log in here</a><br>
-</body>
-</html>
+    <a href="{{ url_for('login') }}">Already have an account? Log in here</a><br>
+</div>
+{% endblock %}

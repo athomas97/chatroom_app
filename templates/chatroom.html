@@ -1,12 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatroom</title>
-</head>
-<body>
-    <h2>Hello {{ current_user.username }}, welcome to the chatroom</h2>
-    <a href="{{url_for('logout')}}">Logout</a>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+<form method="post" class="container">
+    <h3>Hello {{ current_user.username }}! Create or enter a room</h3>
+    <div class="join">
+        <input type="text" placeholder="Room Code" name="code" value="{{ code }}"/>
+        <button type="submit" name="join">Join a Room</button>
+    </div>
+    <button type="submit" name="create" class="create-btn">Create a Room</button>
+    <a href="{{ url_for('logout') }}">Logout</a>
+    {% if error %}
+    <p>{{ error }}</p>
+    {% endif %}
+</form>
+{% endblock %}
