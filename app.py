@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv, dotenv_values
 import random
 from string import ascii_uppercase
 from pathlib import Path
@@ -32,7 +33,9 @@ from wtforms import PasswordField, StringField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.environ.get("CHATROOM_SECRET_KEY")
+
+load_dotenv()
+app.config["SECRET_KEY"] = os.getenv("CHATROOM_SECRET_KEY")
 if not app.config["SECRET_KEY"]:
     raise RuntimeError("Set the CHATROOM_SECRET_KEY environment variable.")
 
