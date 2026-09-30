@@ -313,6 +313,12 @@ form {
   clip-path: circle(50% at center); 
 }
 
+.text-bubble-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .text-bubble {
     display: flex;
     flex-direction: column;
@@ -321,7 +327,7 @@ form {
     gap: 5px;
     height: 120px;
     width: 500px;
-    margin: 15px;
+    margin-bottom: 15px;
     padding:20px 40px;
     border-radius: 50px;
     background-color: var(--white);

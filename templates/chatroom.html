@@ -5,18 +5,20 @@
     <div class="typing-container" style="margin-left: 25px;">
         <h1 class="typing-header">Hi {{ current_user.username }}...</h1>
     </div>
-    <div class="text-bubble">
-        <div class="triangle-left"></div>
-        <h3>Join a room</h3>
-        <input type="text" placeholder="Room Code" name="code" value="{{ code }}"/>
-        <button class="primary-btn join-btn" type="submit" name="join">Join a Room</button>
-    </div>
-    <div class="text-bubble">
-        <div class="triangle-right"></div>
-        <button class="create-btn" type="submit" name="create">
-            <img src="/static/images//png/create.png" alt="logout icon" class="icon">
-            <h3>Create a Room</h3>
-        </button>
+    <div class="text-bubble-container">
+        <div class="text-bubble">
+            <div class="triangle-left"></div>
+            <h3>Join a room</h3>
+            <input type="text" placeholder="Room Code" name="code" value="{{ code }}"/>
+            <button class="primary-btn join-btn" type="submit" name="join">Join a Room</button>
+        </div>
+        <div class="text-bubble">
+            <div class="triangle-right"></div>
+            <button class="create-btn" type="submit" name="create">
+                <img src="/static/images//png/create.png" alt="logout icon" class="icon">
+                <h3>Create a Room</h3>
+            </button>
+        </div>
     </div>
     {% if error %}
     <p>{{ error }}</p>
