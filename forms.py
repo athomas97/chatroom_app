@@ -13,7 +13,10 @@ class RegisterForm(FlaskForm):
         validators=[InputRequired(), Length(min=1, max=20)],
         render_kw={"placeholder": "Password"}
     )
-    submit = SubmitField(label="Register")
+    submit = SubmitField(
+        label="Register",
+        render_kw={"class": "primary-btn"},
+    )
 
     def validate_username(self, username):
         existing_user_username = User.query.filter_by(
@@ -32,4 +35,7 @@ class LoginForm(FlaskForm):
         validators=[InputRequired(), Length(min=1, max=20)],
         render_kw={"placeholder": "Password"}
     )
-    submit = SubmitField(label="Login")
+    submit = SubmitField(
+        label="Login",
+        render_kw={"class": "primary-btn"},
+    )

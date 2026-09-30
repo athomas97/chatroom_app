@@ -1,13 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-    <h1>Register Page</h1>
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
-        {{ form.username }}
-        {{ form.password }}
-        {{ form.submit }}
-    </form>
-    <a href="{{ url_for('login') }}">Already have an account? Log in here</a><br>
+    <div class="typing-container">
+        <h1 class="typing-header">Register now...</h1>
+    </div>
+    <div class="popup-container">
+        <img id="chat-icon" src="/static/images/png/chat.png" alt="chat icon">
+        <h2>Register to start chatting</h2>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            {{ form.username }}
+            {{ form.password }}
+            {{ form.submit }}
+        </form>
+        <a href="{{ url_for('login') }}">Already have an account? Log in here</a>
+    </div>
 </div>
 {% endblock %}
