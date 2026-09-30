@@ -105,16 +105,6 @@ h3 {
     gap: 30px;
 }
 
-.join {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-}
-
-.create-btn {
-    width: 100%;
-}
-
 .primary-btn {
     color: var(--white);
     background-color: var(--medium-blue);
@@ -150,7 +140,6 @@ h3 {
     display: flex;
     padding: 10px;
 }
-
 
 input {
     color: var(--medium-blue);
@@ -322,6 +311,68 @@ form {
   height: 30px;
   object-fit: cover; 
   clip-path: circle(50% at center); 
+}
+
+.text-bubble {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    gap: 5px;
+    height: 120px;
+    width: 500px;
+    margin: 15px;
+    padding:20px 40px;
+    border-radius: 50px;
+    background-color: var(--white);
+
+    h3 {
+        text-align: left;
+    }
+    input, .create-btn {
+        flex-grow: 1;
+        border: 1.5px solid var(--medium-blue);
+    }
+    .create-btn {
+        cursor: pointer;
+        color: var(--medium-blue);
+        background-color: var(--white);
+        border-radius: 25px;
+    }
+    button {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 10px 20px;
+        border: 1.5px solid var(--medium-blue);
+        border-radius: 10px;
+        font-size: 20px;
+    }
+    .join-btn {
+        position: absolute;
+        right: 30px;
+        bottom: -15px;
+    }
+    .triangle-left,
+    .triangle-right {
+        position: absolute;
+        bottom: -35px;
+        z-index: -1;
+        width: 100px;
+        height: 100px;
+        background: var(--white);
+        clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    }
+    .triangle-left {
+        left: -40px;
+        transform: rotate(-125deg);
+    }
+    .triangle-right {
+        right: -40px;
+        transform: rotate(125deg);
+    }
 }
 
 @media (max-width: 767px) {
