@@ -86,7 +86,6 @@ h3 {
 
 .muted {
     font-size: 10px;
-    color: darkgray;
 }
 
 .content {
@@ -117,23 +116,6 @@ h3 {
     &:hover {
         opacity: 0.9;
     }
-}
-
-.message-box {
-    display: flex;
-    flex-direction: column;
-    border: solid 2px black;
-    border-radius: 10px;
-    background-color: whitesmoke;
-    height: 80vh;
-    width: 80vh;
-    align-items: stretch;
-}
-
-.messages {
-    overflow-y: scroll;
-    flex: 1;
-    width: 100%;
 }
 
 .inputs {
@@ -219,6 +201,7 @@ form {
     align-items: center;
     width: 100%;
     padding: 20px;
+    pointer-events: none;
 
     .user {
         display: flex;
@@ -229,6 +212,7 @@ form {
         width: fit-content;
         cursor: pointer;
         align-items: center;
+        pointer-events: auto;
         color: var(--white);
         background-color: var(--medium-blue);
         border: 2px solid var(--dark-blue);
@@ -273,6 +257,7 @@ form {
         right: 0px;
         bottom: -40px;
         margin-right: 20px;
+        pointer-events: auto;
 
         &.is-open,
         &.is-closing {
@@ -379,6 +364,68 @@ form {
         right: -40px;
         transform: rotate(125deg);
     }
+}
+
+.message-box {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: 80vh;
+    width: 130vh;
+    border: 2px solid var(--dark-blue);
+    border-radius: 10px;
+    background-color: var(--light-blue);
+    box-shadow: 15px 15px 0px var(--dark-blue);
+
+    .inputs {
+        display: flex;
+        gap: 10px;
+    }
+    button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 10px 20px;
+        border: 1.5px solid var(--medium-blue);
+        border-radius: 10px;
+        font-size: 20px;
+    }
+    .room-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        color: var(--white);
+        background-color: var(--medium-blue);
+        border-bottom: 2px solid var(--dark-blue);
+        margin-bottom: 10px;
+        border-top-right-radius: 7px;
+        border-top-left-radius: 7px;
+        h2, p {
+            color: var(--white);
+        }
+        .leave-room {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 2px 10px;
+            border: 1.5px solid var(--white);
+            border-radius: 5px;
+            font-size: 10px;
+            text-decoration: none;
+        }
+    }
+    
+}
+
+
+.messages {
+    overflow-y: scroll;
+    flex: 1;
+    width: 100%;
+    color: var(--medium-blue);
 }
 
 @media (max-width: 767px) {

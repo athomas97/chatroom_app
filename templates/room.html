@@ -3,7 +3,13 @@
 {% include "navbar.html" %}
 <div class="container">    
     <div class="message-box">
-        <h3>Chat Room: {{ code }}</h3>
+        <div class="room-header">
+            <h2>Chatroom ({{ code }})</h2>
+            <a class="leave-room" href="{{ url_for('chatroom') }}">
+                <img class="icon" src="/static/images/png/leave_room.png" alt="">
+                <h2>Leave Room</h2>
+            </a>
+        </div>
         <div class="messages" id="messages">
 
         </div>
@@ -16,6 +22,7 @@
                 id="message"
             />
             <button
+                class="primary-btn"
                 type="button"
                 name="send"
                 id="send-btn"
@@ -25,7 +32,6 @@
             </button>
         </div>
     </div>
-    <a href="{{ url_for('chatroom') }}">Leave Room</a>
 </div>
 <script type="text/javascript">
     var socketio = io();
