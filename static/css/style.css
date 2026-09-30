@@ -1,7 +1,8 @@
 :root {
   --white: #FFFDFF;
   --light-blue: #DCECFC;
-  --dark-blue: #324D85;
+  --medium-blue: #324D85;
+  --dark-blue: #0d1a33;
   --transparent: rgba(223, 223, 223, 0);
 }
 
@@ -14,7 +15,7 @@
 html,
 body {
     min-height: 100%;
-    margin: 0;
+    margin: 0px;
 }
 
 body {
@@ -22,11 +23,13 @@ body {
     display: flex;
     flex-direction: column;
     background-color: var(--light-blue);
+    overflow-x: clip;
+    overflow-y: visible;
 }
 
 h1, h2, h3, h4, h5, p {
     margin: 0px;
-    color: var(--dark-blue);
+    color: var(--medium-blue);
 }
 
 h2 {
@@ -60,7 +63,7 @@ h3 {
 }
 
 @keyframes typing{
-    from { width: 0 }
+    from { width: 0px }
 }
 
 .link {
@@ -114,7 +117,7 @@ h3 {
 
 .primary-btn {
     color: var(--white);
-    background-color: var(--dark-blue);
+    background-color: var(--medium-blue);
     padding-left: 20px;
     padding-right: 20px;
     cursor: pointer;
@@ -150,23 +153,23 @@ h3 {
 
 
 input {
-    color: var(--dark-blue);
+    color: var(--medium-blue);
     background-color: var(--white);
-    border: 1.5px solid var(--dark-blue);
+    border: 1.5px solid var(--medium-blue);
     border-radius: 10px;
     padding: 10px 20px;
 
     &:focus {
         outline: none;
-        border: 2px solid var(--dark-blue);
+        border: 2px solid var(--medium-blue);
     }
 
     &::placeholder {
-        color: var(--dark-blue);
+        color: var(--medium-blue);
     }
 
     &[type="text"] {
-        color: var(--dark-blue);
+        color: var(--medium-blue);
     }
 }
 
@@ -187,18 +190,18 @@ form {
     gap: 20px;
     padding: 50px;
     width: fit-content;
-    border: 2px solid var(--dark-blue);
+    border: 2px solid var(--medium-blue);
     border-radius: 30px;
-    box-shadow: 10px 10px 0px var(--dark-blue);
+    box-shadow: 10px 10px 0px var(--medium-blue);
     margin-right: 34px;
     margin-bottom: 10px;
-    transform: translateX(0);
-    transform: translateY(0);
+    transform: translateX(0px);
+    transform: translateY(0px);
     transition: box-shadow 0.2s ease,
                 transform 0.2s ease;
 
     &:hover {
-        box-shadow: 20px 20px 0px var(--dark-blue);
+        box-shadow: 20px 20px 0px var(--medium-blue);
         transform: translate(-10px, -10px);
     }
     h2, form, a {
@@ -212,6 +215,113 @@ form {
     right: -40px;
     width: 100px;
     height: 100px;
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+}
+
+.navbar {
+    position: absolute;
+    top: 0px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+
+    .user {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+        padding: 5px 15px;
+        margin: 0px 5px 5px 0px;
+        width: fit-content;
+        cursor: pointer;
+        align-items: center;
+        color: var(--white);
+        background-color: var(--medium-blue);
+        border: 2px solid var(--dark-blue);
+        border-radius: 30px;
+        box-shadow: 5px 5px 0px var(--dark-blue);
+        transform: translate(0px, 0px);
+        transition: box-shadow 0.2s ease,
+                    transform 0.2s ease;
+
+        &:hover {
+            box-shadow: 10px 10px 0px var(--dark-blue);
+            transform: translate(-5px, -5px);
+        }
+        p {
+            color: var(--white);
+        }
+    }
+    .menu-item {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+        padding: 10px 40px 10px 30px;
+        margin: 0px 5px 5px 0px;
+        width: fit-content;
+        cursor: pointer;
+        align-items: center;
+        color: var(--medium-blue);
+        background-color: var(--light-blue);
+        border: 2px solid var(--medium-blue);
+        border-radius: 30px;
+        text-decoration: none;
+        box-shadow: none;
+        transform: translate(0px, 0px);
+        transition: transform 0.2s ease;
+        &:hover {
+            transform: translate(-20px, 0px);
+        }
+    }
+    .popup {
+        display: none;
+        position: absolute;
+        right: 0px;
+        bottom: -40px;
+        margin-right: 20px;
+
+        &.is-open,
+        &.is-closing {
+            display: block;
+        }
+        &.is-open .menu-item {
+            animation: menu-item-enter 250ms ease-out;
+        }
+        &.is-closing .menu-item {
+            animation: menu-item-exit 250ms ease-in;
+            pointer-events: none;
+        }
+        .menu-item p {
+            text-align: right;
+        }
+    }
+}
+
+@keyframes menu-item-enter {
+    from {
+        transform: translateX(80px);
+    }
+    to {
+        transform: translateX(0px);
+    }
+}
+
+@keyframes menu-item-exit {
+    to {
+        transform: translateX(80px);
+    }
+}
+
+.circle-mask {
+  width: 30px;
+  height: 30px;
+  object-fit: cover; 
+  clip-path: circle(50% at center); 
 }
 
 @media (max-width: 767px) {

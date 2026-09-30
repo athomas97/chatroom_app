@@ -1,0 +1,46 @@
+<div class="navbar">
+    <div class="user" id="user-menu-trigger">
+        <img src="/static/images/profile/default_profile.jpg" alt="Circular Profile" class="circle-mask">
+        <p>{{ current_user.username }}</p>
+    </div>
+    <div class="popup" id="user-menu">
+        <a class="menu-item" href="{{ url_for('logout') }}">
+            <img src="/static/images//png/logout.png" alt="logout icon" class="icon">
+            <p>Logout</p>
+        </a>
+    </div>
+</div>
+<script>
+    const trigger = document.getElementById("user-menu-trigger");
+    const popup = document.getElementById("user-menu");
+
+    const closePopup = () => {
+        if (popup.classList.contains("is-open")) {
+            popup.classList.add("is-closing");
+        }
+    };
+
+    trigger.addEventListener("click", () => {
+        if (popup.classList.contains("is-open")) {
+            closePopup();
+        } else {
+            popup.classList.remove("is-closing");
+            popup.classList.add("is-open");
+        }
+    });
+
+    document.addEventListener("click", (event) => {
+        if (!popup.contains(event.target) && !trigger.contains(event.target)) {
+            closePopup();
+        }
+    });
+
+    popup.addEventListener("animationend", (event) => {
+        if (
+            event.target.matches(".menu-item") &&
+            popup.classList.contains("is-closing")
+        ) {
+            popup.classList.remove("is-open", "is-closing");
+        }
+    });
+</script>
