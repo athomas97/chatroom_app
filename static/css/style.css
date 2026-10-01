@@ -173,7 +173,7 @@ form {
     border-radius: 30px;
     box-shadow: 20px 20px 0px var(--medium-blue);
     margin-right: 34px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 
     h2, form, a {
         width: 100%;
