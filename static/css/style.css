@@ -407,17 +407,19 @@ form {
         .leave-room {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 2px 10px;
+            gap: 10px;
+            padding: 5px 15px;
             border: 1.5px solid var(--white);
             border-radius: 5px;
             font-size: 10px;
             text-decoration: none;
         }
+        .icon {
+            width: 15px;
+            height: 15px;
+        }
     }
-    
 }
-
 
 .messages {
     overflow-y: scroll;
