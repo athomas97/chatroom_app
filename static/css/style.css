@@ -112,9 +112,17 @@ h3 {
     cursor: pointer;
     align-self: flex-start;
     width: fit-content;
+}
 
+.popup-btn {
+    box-shadow: 0px 0px 0px var(--dark-blue);
+    transform: translateX(0px);
+    transform: translateY(0px);
+    transition: box-shadow 0.2s ease,
+                transform 0.2s ease;
     &:hover {
-        opacity: 0.9;
+        box-shadow: 10px 10px 0px var(--dark-blue);
+        transform: translate(-5px, -5px);
     }
 }
 
@@ -163,18 +171,10 @@ form {
     width: fit-content;
     border: 2px solid var(--medium-blue);
     border-radius: 30px;
-    box-shadow: 10px 10px 0px var(--medium-blue);
+    box-shadow: 20px 20px 0px var(--medium-blue);
     margin-right: 34px;
     margin-bottom: 10px;
-    transform: translateX(0px);
-    transform: translateY(0px);
-    transition: box-shadow 0.2s ease,
-                transform 0.2s ease;
 
-    &:hover {
-        box-shadow: 20px 20px 0px var(--medium-blue);
-        transform: translate(-10px, -10px);
-    }
     h2, form, a {
         width: 100%;
     }
@@ -298,12 +298,6 @@ form {
   clip-path: circle(50% at center); 
 }
 
-.text-bubble-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
 .text-bubble {
     display: flex;
     flex-direction: column;
@@ -329,6 +323,10 @@ form {
         color: var(--medium-blue);
         background-color: var(--white);
         border-radius: 25px;
+    }
+    .create-btn .icon {
+        width: 25px;
+        height: 25px;
     }
     button {
         display: flex;

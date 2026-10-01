@@ -15,7 +15,7 @@ class RegisterForm(FlaskForm):
     )
     submit = SubmitField(
         label="Register",
-        render_kw={"class": "primary-btn"},
+        render_kw={"class": "primary-btn popup-btn"},
     )
 
     def validate_username(self, username):
@@ -37,5 +37,5 @@ class LoginForm(FlaskForm):
     )
     submit = SubmitField(
         label="Login",
-        render_kw={"class": "primary-btn"},
+        render_kw={"class": "primary-btn popup-btn"},
     )
