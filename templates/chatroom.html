@@ -2,17 +2,37 @@
 {% block content %}
 {% include "navbar.html" %}
 <form method="post" class="container">
-    <h2 style="margin-left: 40px;">Create or join a room</h2>
-    <div class="text-bubble">
-        <div class="triangle-left"></div>
-        <input type="text" placeholder="Room Code" name="code" value="{{ code }}"/>
-        <button class="primary-btn join-btn popup-btn" type="submit" name="join">Join a Room</button>
+    <div id="join-room">
+        <h2 class="header">Join a chatroom...</h2>
+        <div class="text-bubble">
+            <div class="bubble-shadow">
+                <div class="bubble-silhouette">
+                    <div class="triangle"></div>
+                </div>
+            </div>
+            <div class="join-room-input">
+                <input
+                    type="text"
+                    placeholder="Enter Room Code"
+                    name="code"
+                    value="{{ code }}"
+                    maxlength="4"
+                />
+                <button type="submit" name="join">
+                    <h1>+</h1>
+                </button>
+            </div>
+        </div>
     </div>
-    <div class="text-bubble">
-        <div class="triangle-right"></div>
-        <button class="create-btn" type="submit" name="create">
-            <img src="/static/images/svg/create.svg" alt="logout icon" class="icon">
-            <h3>Create a Room</h3>
+    <div id="create-room">
+        <h2 class="header">or...</h2>
+        <button class="text-bubble" type="submit" name="create">
+            <div class="bubble-shadow">
+                <div class="bubble-silhouette">
+                    <div class="triangle"></div>
+                </div>
+            </div>
+            <h2>Create a Room</h2>
         </button>
     </div>
     {% if error %}
