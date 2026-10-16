@@ -125,7 +125,7 @@ h3 {
                 transform 0.2s ease;
 
     &:hover {
-        box-shadow: 10px 10px 0px var(--dark-blue);
+        box-shadow: 5px 5px 0px var(--dark-blue);
         transform: translate(-5px, -5px);
     }
 }
@@ -143,8 +143,8 @@ input {
     padding: 10px 20px;
 
     &:focus {
-        outline: none;
-        border: 2px solid var(--medium-blue);
+        outline: 1px solid var(--medium-blue);
+        outline-offset: 0;
     }
 
     &::placeholder {
@@ -154,6 +154,15 @@ input {
     &[type="text"] {
         color: var(--medium-blue);
     }
+}
+
+input:autofill,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    box-shadow: 0 0 0 1000px var(--white) inset;
+    -webkit-box-shadow: 0 0 0 1000px var(--white) inset;
+    -webkit-text-fill-color: var(--medium-blue);
 }
 
 form {
@@ -416,14 +425,6 @@ form {
         padding-left: 70px;
         border: none;
         border-radius: inherit;
-    }
-    input:autofill,
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover,
-    input:-webkit-autofill:focus {
-        box-shadow: 0 0 0 1000px var(--white) inset;
-        -webkit-box-shadow: 0 0 0 1000px var(--white) inset;
-        -webkit-text-fill-color: var(--medium-blue);
     }
     .join-room-input:focus-within button,
     .join-room-input input:not(:placeholder-shown) ~ button {
