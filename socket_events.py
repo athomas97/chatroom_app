@@ -1,6 +1,6 @@
 from flask import session
 from flask_login import current_user
-from flask_socketio import join_room, leave_room, send
+from flask_socketio import join_room, leave_room, send, emit
 
 def register_socket_events(socketio, rooms):
     @socketio.on("message")
@@ -28,6 +28,22 @@ def register_socket_events(socketio, rooms):
         send(message={"name": name, "message": "has entered the room"}, to=room)
         rooms[room]["members"] += 1
         print(f"{name} joined room {room}")
+
+    @socketio.on("typing")
+    def handle_typing(data):
+        room = session.get("room")
+        if not current_user.is_authenticated or room not in rooms:
+            return
+
+        emit(
+            "typing",
+            {
+                "name": current_user.username,
+                "is_typing": bool(data.get("is_typing")),
+            },
+            to=room,
+            include_self=False,
+        )
 
     @socketio.on("disconnect")
     def handle_disconnect():
