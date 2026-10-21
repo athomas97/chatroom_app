@@ -61,14 +61,6 @@ h3 {
         cursor .4s step-end infinite alternate;
 }
 
-@keyframes cursor{
-    50% { border-color: transparent }
-}
-
-@keyframes typing{
-    from { width: 0px }
-}
-
 .link {
     align-self: flex-start;
     width: fit-content;
@@ -87,6 +79,7 @@ h3 {
     flex: 1;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 .container {
@@ -272,24 +265,6 @@ form {
     }
 }
 
-@keyframes menu-item-enter {
-    from {
-        transform: translateX(300px);
-    }
-    to {
-        transform: translateX(0px);
-    }
-}
-
-@keyframes menu-item-exit {
-    from {
-        transform: translateX(0px);
-    }
-    to {
-        transform: translateX(300px);
-    }
-}
-
 .header {
     width: 100%;
     margin-bottom: 15px;
@@ -345,35 +320,18 @@ form {
     }
 }
 
-#create-room {
-    .header {
-        text-align: right;
-        padding-right: 30px;
-    }
-    .text-bubble:hover {
-        transform: translate(-10px, -10px);
-    }
-    .text-bubble:hover .bubble-shadow {
-        filter: drop-shadow(10px 10px 0 var(--dark-blue));
-    }
-    .triangle, .bubble-silhouette {
-        background: var(--medium-blue);
-    }
-    .triangle {
-        right: -40px;
-        transform: rotate(125deg);
-    }
-    button h2 {
-        text-align: left;
-        padding-left: 70px;
-        color: var(--white);
-    }
-}
 
 #join-room {
     .header {
         text-align: left;
         padding-left: 30px;
+        animation: join-bubble-heading-enter 650ms ease-out both;
+        animation-delay: 50ms;
+    }
+    .text-bubble {
+        transform-origin: bottom left;
+        animation: join-text-bubble-enter 650ms ease-out both;
+        animation-delay: 0ms;
     }
     .text-bubble:hover {
         transform: translate(10px, -10px);
@@ -447,6 +405,38 @@ form {
     }
     button:hover h1 {
         transform: scale(1.1);
+    }
+}
+
+#create-room {
+    .header {
+        text-align: right;
+        padding-right: 30px;
+        animation: text-bubble-heading-enter 650ms ease-out both;
+        animation-delay: 250ms;
+    }
+    .text-bubble {
+        transform-origin: bottom right;
+        animation: create-text-bubble-enter 650ms ease-out both;
+        animation-delay: 200ms;
+    }
+    .text-bubble:hover {
+        transform: translate(-10px, -10px);
+    }
+    .text-bubble:hover .bubble-shadow {
+        filter: drop-shadow(10px 10px 0 var(--dark-blue));
+    }
+    .triangle, .bubble-silhouette {
+        background: var(--medium-blue);
+    }
+    .triangle {
+        right: -40px;
+        transform: rotate(125deg);
+    }
+    button h2 {
+        text-align: left;
+        padding-left: 70px;
+        color: var(--white);
     }
 }
 
@@ -665,6 +655,120 @@ form {
         &.is-closing .menu-item:nth-child(3) {
             animation-delay: 0s;
         }
+    }
+}
+
+
+/* Animations */
+@keyframes cursor{
+    50% { border-color: transparent }
+}
+
+@keyframes typing{
+    from { width: 0px }
+}
+
+@keyframes join-text-bubble-enter {
+    0% {
+        opacity: 0;
+        transform: rotate(10deg) translateY(50px);
+        animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    20% {
+        opacity: 1;
+    }
+    55% {
+        transform: rotate(-2deg) translateY(-5px);
+        animation-timing-function: cubic-bezier(0.25, 0.7, 0.35, 1);
+    }
+    80% {
+        transform: rotate(1deg) translateY(2px);
+        animation-timing-function: ease-out;
+    }
+    100% {
+        transform: rotate(0deg) translateY(0px);
+    }
+}
+
+@keyframes create-text-bubble-enter {
+    0% {
+        opacity: 0;
+        transform: rotate(-10deg) translateY(50px);
+        animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    20% {
+        opacity: 1;
+    }
+    55% {
+        transform: rotate(2deg) translateY(-5px);
+        animation-timing-function: cubic-bezier(0.25, 0.7, 0.35, 1);
+    }
+    80% {
+        transform: rotate(-1deg) translateY(2px);
+        animation-timing-function: ease-out;
+    }
+    100% {
+        transform: rotate(0deg) translateY(0px);
+    }
+}
+
+@keyframes join-bubble-heading-enter {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+        animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    20% {
+        opacity: 1;
+    }
+    55% {
+        transform: translateY(-7px);
+        animation-timing-function: cubic-bezier(0.25, 0.7, 0.35, 1);
+    }
+    80% {
+        transform: translateY(3px);
+        animation-timing-function: ease-out;
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes text-bubble-heading-enter {
+    0% {
+        opacity: 0;
+        transform: translateY(100px);
+        animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    55% {
+        opacity: 1;
+        transform: translateY(-7px);
+        animation-timing-function: cubic-bezier(0.25, 0.7, 0.35, 1);
+    }
+    80% {
+        transform: translateY(3px);
+        animation-timing-function: ease-out;
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes menu-item-enter {
+    from {
+        transform: translateX(300px);
+    }
+    to {
+        transform: translateX(0px);
+    }
+}
+
+@keyframes menu-item-exit {
+    from {
+        transform: translateX(0px);
+    }
+    to {
+        transform: translateX(300px);
     }
 }
 
