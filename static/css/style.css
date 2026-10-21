@@ -197,91 +197,84 @@ form {
 }
 
 .navbar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
     position: absolute;
     top: 0px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
     width: 100%;
+    height: 100%;
     padding: 20px;
     pointer-events: none;
+    cursor: pointer;
 
-    .user {
+    .user, .menu-item {
         display: flex;
         flex-direction: row;
         gap: 15px;
-        padding: 5px 15px;
-        margin: 0px 5px 5px 0px;
+        height: 50px;
+        padding: 10px 30px;
         width: fit-content;
-        cursor: pointer;
         align-items: center;
+        justify-content: center;
+        border-radius: 30px;
         pointer-events: auto;
+    }
+    .user {
         color: var(--white);
         background-color: var(--medium-blue);
-        border: 2px solid var(--dark-blue);
-        border-radius: 30px;
-        box-shadow: 5px 5px 0px var(--dark-blue);
-        transform: translate(0px, 0px);
-        transition: box-shadow 0.2s ease,
-                    transform 0.2s ease;
-
-        &:hover {
-            box-shadow: 10px 10px 0px var(--dark-blue);
-            transform: translate(-5px, -5px);
-        }
-        p {
+        border: 2px solid var(--medium-blue);
+        h2 {
             color: var(--white);
         }
     }
+    .expand-width {
+        transition: padding-left 250ms ease;
+        img,
+        h2 {
+            transition: transform 250ms ease;
+        }
+        &:hover,
+        &:focus-visible {
+            padding-left: 50px;
+            img,
+            h2 {
+                transform: translateX(-10px);
+            }
+        }
+    }
     .menu-item {
-        display: flex;
-        flex-direction: row;
-        gap: 15px;
-        padding: 10px 40px 10px 30px;
-        margin: 0px 5px 5px 0px;
-        width: fit-content;
-        cursor: pointer;
-        align-items: center;
         color: var(--medium-blue);
         background-color: var(--light-blue);
         border: 2px solid var(--medium-blue);
-        border-radius: 30px;
         text-decoration: none;
-        box-shadow: none;
-        transform: translate(0px, 0px);
-        transition: transform 0.2s ease;
-        &:hover {
-            transform: translate(-20px, 0px);
-        }
     }
-    .popup {
-        display: none;
-        position: absolute;
-        right: 0px;
-        bottom: -40px;
-        margin-right: 20px;
-        pointer-events: auto;
-
-        &.is-open,
-        &.is-closing {
-            display: block;
-        }
-        &.is-open .menu-item {
-            animation: menu-item-enter 250ms ease-out;
-        }
-        &.is-closing .menu-item {
-            animation: menu-item-exit 250ms ease-in;
-            pointer-events: none;
-        }
-        .menu-item p {
-            text-align: right;
-        }
+    &:not(.is-open):not(.is-closing) .menu-item {
+        visibility: hidden;
+        pointer-events: none;
+    }
+    &.is-open .menu-item {
+        visibility: visible;
+        animation: menu-item-enter 0.3s ease-out both;
+    }
+    &.is-closing .menu-item {
+        visibility: visible;
+        animation: menu-item-exit 0.3s ease-in both;
+    }
+    &.is-open .menu-item:nth-child(2),
+    &.is-closing .menu-item:nth-child(2) {
+        animation-delay: 0s;
+    }
+    &.is-open .menu-item:nth-child(3),
+    &.is-closing .menu-item:nth-child(3) {
+        animation-delay: 0.1s;
     }
 }
 
 @keyframes menu-item-enter {
     from {
-        transform: translateX(80px);
+        transform: translateX(300px);
     }
     to {
         transform: translateX(0px);
@@ -289,16 +282,12 @@ form {
 }
 
 @keyframes menu-item-exit {
-    to {
-        transform: translateX(80px);
+    from {
+        transform: translateX(0px);
     }
-}
-
-.circle-mask {
-  width: 30px;
-  height: 30px;
-  object-fit: cover; 
-  clip-path: circle(50% at center); 
+    to {
+        transform: translateX(300px);
+    }
 }
 
 .header {
@@ -586,7 +575,7 @@ form {
     }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 900px) {
     .container {
         gap: 50px;
     }
@@ -609,5 +598,90 @@ form {
     }
     .primary-btn {
         width: 100%;
+    }
+    .navbar {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-end;
+        gap: 0;
+        transition: gap 0.3s ease;
+        &.is-open {
+            gap: 10px;
+        }
+        &.is-closing {
+            gap: 0;
+        }
+        .menu-item {
+            --icon-width: 20px;
+            --menu-border-width: 2px;
+            --collapsed-width: calc(var(--icon-width) + 60px + 2 * var(--menu-border-width));
+            flex: 0 0 0;
+            min-width: 0;
+            padding: 10px 0;
+            border-width: 0;
+            overflow: visible;
+            transition:
+                flex-basis 250ms ease,
+                padding 250ms ease,
+                border-width 250ms ease;
+            h2 {
+                display: none;
+                font-size: 12px;
+                font-weight: 800;
+                position: absolute;
+                bottom: -35px;
+                padding: 5px 20px;
+                border-radius: 30px;
+                color: var(--medium-blue);
+                border: 2px solid var(--medium-blue);
+                background-color: var(--light-blue);
+            }
+            &:hover h2,
+            &:focus-visible h2 {
+                display: block;
+            }
+        }
+        &.is-open .menu-item {
+            flex-basis: var(--collapsed-width);
+            padding: 10px 30px;
+            border-width: 2px;
+            visibility: visible;
+            animation: mobile-menu-item-enter 0.3s ease-out both;
+        }
+        &.is-closing .menu-item {
+            flex-basis: 0;
+            padding: 10px 0;
+            border-width: 0;
+            visibility: visible;
+            pointer-events: none;
+            animation: mobile-menu-item-exit 0.3s ease-in both;
+        }
+        &.is-open .menu-item:hover,
+        &.is-open .menu-item:focus-visible {
+            flex-basis: calc(var(--collapsed-width) + 20px);
+            padding-left: 50px;
+        }
+        &.is-open .menu-item:nth-child(3),
+        &.is-closing .menu-item:nth-child(3) {
+            animation-delay: 0s;
+        }
+    }
+}
+
+@keyframes mobile-menu-item-enter {
+    from {
+        transform: translateX(300px);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes mobile-menu-item-exit {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(300px);
     }
 }
