@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "navbar.html" %}
+<div class="container" id="settings">
+    <div id="settings-heading">
+        <a href="{{ url_for('chatroom') }}">
+            <img
+                src="/static/images/svg/back.svg"
+                alt="logout icon"
+                class="icon"
+            >
+        </a>
+        <div class="typing-container">
+            <h1 class="typing-header">Settings...</h1>
+        </div>
+    </div>
+    <div id="settings-body">
+        <div class="popup-container">
+            <div class="nav-item">
+                <div class="selected-nav-item"></div>
+                <h2>Account Deletion</h2>
+            </div>
+        </div>
+        <div class="popup-container" id="delete-account">
+            <img
+                id="chat-icon"
+                src="/static/images/svg/delete_account.svg"
+                alt="chat icon"
+            >
+            <h2>Delete Account</h2>
+            <p>
+                Permenantly delete your account.
+                This action is irreversable.
+            </p>
+            <button
+                class="warning-btn popup-btn"
+                type="submit" 
+                name="delete"
+            >
+                Delete Account
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
