@@ -142,5 +142,12 @@ def room(code):
         messages=rooms[room]["messages"]
     )
 
+@app.route("/settings")
+@login_required
+def settings():
+    return render_template(
+        template_name_or_list="settings.html"
+    )
+
 if __name__ == "__main__":
     socketio.run(app=app, debug=True)
