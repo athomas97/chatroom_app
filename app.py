@@ -1,6 +1,6 @@
 from extensions import db
 from db_models import User
-from forms import LoginForm, RegisterForm
+from forms import LoginForm, RegisterForm, DeleteAccountForm
 from common_utils import generate_unique_code
 from socket_events import register_socket_events
 
@@ -145,9 +145,25 @@ def room(code):
 @app.route("/settings")
 @login_required
 def settings():
+    form = DeleteAccountForm()
     return render_template(
-        template_name_or_list="settings.html"
+        template_name_or_list="settings.html",
+        form=form
     )
+
+@app.route("/settings/delete-account", methods=["POST"])
+@login_required
+def delete_account():
+    form = DeleteAccountForm()
+    if not form.validate_on_submit():
+        return redirect(location=url_for(endpoint="settings"))
+
+    db.session.delete(instance=current_user)
+    db.session.commit()
+
+    logout_user()
+    session.clear()
+    return redirect(location=url_for(endpoint="login"))
 
 if __name__ == "__main__":
     socketio.run(app=app, debug=True)
