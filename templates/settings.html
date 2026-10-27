@@ -32,13 +32,14 @@
                 Permenantly delete your account.
                 This action is irreversable.
             </p>
-            <button
-                class="warning-btn popup-btn"
-                type="submit" 
-                name="delete"
+            <form
+                method="POST"
+                action="{{ url_for('delete_account') }}"
+                onsubmit="return confirm('Permanently delete your account? This cannot be undone.');"
             >
-                Delete Account
-            </button>
+                {{ form.hidden_tag() }}
+                {{ form.delete }}
+            </form>
         </div>
     </div>
 </div>

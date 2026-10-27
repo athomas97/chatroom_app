@@ -39,3 +39,9 @@ class LoginForm(FlaskForm):
         label="Login",
         render_kw={"class": "primary-btn popup-btn"},
     )
+
+class DeleteAccountForm(FlaskForm):
+    delete = SubmitField(
+        label="Delete Account",
+        render_kw={"class": "warning-btn popup-btn"},
+    )

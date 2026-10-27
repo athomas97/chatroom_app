@@ -208,11 +208,11 @@ form {
     img {
         width: 50px;
         height: 50px;
-        opacity: 1;
-        transition: opacity 0.1s ease;
+        transform: translateX(0px);
+        transition: transform 0.1s ease;
     }
     img:hover {
-        opacity: 0.8;
+        transform: translateX(-5px);
     }
 }
 
@@ -233,10 +233,6 @@ form {
     height: 15px;
     width: 15px;
     background-color: var(--medium-blue);
-}
-
-#delete-account button {
-    align-self: flex-end;
 }
 
 #chat-icon {
