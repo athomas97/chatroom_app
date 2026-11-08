@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% include "navbar.html" %}
-<form method="post" class="container chatroom-pg">
+<form method="post" class="container chatroom-pg {% if error %} has-error {% endif %}">
     <div id="join-room">
         <h2 class="header">Join a chatroom...</h2>
         <div class="text-bubble {% if error %} error-bubble {% endif %}">

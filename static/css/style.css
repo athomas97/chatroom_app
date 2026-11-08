@@ -518,6 +518,8 @@ form {
     .error-msg-container {
         margin-top: 20px;
         padding-left: 30px;
+        animation: join-bubble-heading-enter 650ms ease-out both;
+        animation-delay: 50ms;
     }
 }
 
@@ -571,6 +573,14 @@ form {
         padding-left: 30px;
         color: var(--white);
     }
+}
+
+.chatroom-pg.has-error #join-room .header,
+.chatroom-pg.has-error #join-room .text-bubble,
+.chatroom-pg.has-error #join-room .error-msg-container,
+.chatroom-pg.has-error #create-room .header,
+.chatroom-pg.has-error #create-room .text-bubble {
+    animation: none;
 }
 
 #room {
