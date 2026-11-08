@@ -49,16 +49,16 @@ h3 {
 .typing-container {
     display: inline-block;
     align-self: flex-start;
+    width: 100%;
 }
 
 .typing-header {
     font-size: 80px;
     border-right: 5px solid;
-    width: 100%;
+    width: fit-content;
     white-space: nowrap;
     overflow: hidden;
     animation:
-        typing 2s steps(9),
         cursor .4s step-end infinite alternate;
 }
 
@@ -89,6 +89,23 @@ h3 {
     align-items: center;
     justify-content: center;
     gap: 30px;
+    width: 100%;
+}
+
+.container#login,
+.container#register,
+.container#settings {
+    padding: 0px 15px;
+    width: 100%;
+    gap: 30px;
+    max-width: 700px;
+}
+
+.container.chatroom-pg {
+    padding: 0px 25px;
+    width: 100%;
+    min-width: 350px;
+    max-width: 600px;
 }
 
 input, button {
@@ -192,14 +209,14 @@ form {
     }
 }
 
-#settings {
-    gap: 50px;
+#settings-body .popup-container {
+    width: 100%;
 }
 
 #settings-heading {
     display: flex;
     align-items: center;
-    align-self: flex-start;
+    width: 100%;
     gap: 30px;
 
     a {
@@ -219,6 +236,7 @@ form {
 #settings-body {
     display: flex;
     height: 300px;
+    width: 100%;
     gap: 15px;
 }
 
@@ -337,13 +355,14 @@ form {
     justify-content: center;
     gap: 5px;
     margin-bottom: 15px;
-    width: 500px;
+    width: 100%;
     height: 90px;
     border: none;
     appearance: none;
     isolation: isolate;
     background: transparent;
     transition: transform 0.2s ease;
+
     &:is(button) {
         cursor: pointer;
     }
@@ -379,8 +398,14 @@ form {
     }
 }
 
+#join-room, #create-room {
+    width: 100%;
+}
 
 #join-room {
+    padding-left: 45px;
+    padding-bottom: 10px;
+
     .header {
         text-align: left;
         padding-left: 30px;
@@ -418,9 +443,13 @@ form {
     input {
         flex: 1;
         min-width: 0;
-        padding-left: 70px;
+        padding-left: 30px;
         border: none;
         border-radius: inherit;
+    }
+    input:focus {
+        border: none;
+        outline: none;
     }
     .join-room-input:focus-within button,
     .join-room-input input:not(:placeholder-shown) ~ button {
@@ -466,6 +495,9 @@ form {
 }
 
 #create-room {
+    padding-right: 45px;
+    padding-bottom: 10px;
+
     .header {
         text-align: right;
         padding-right: 30px;
@@ -492,7 +524,7 @@ form {
     }
     button h2 {
         text-align: left;
-        padding-left: 70px;
+        padding-left: 30px;
         color: var(--white);
     }
 }
@@ -623,29 +655,53 @@ form {
 }
 
 @media (max-width: 900px) {
-    .container {
-        gap: 50px;
-    }
-    .typing-container, .link {
-        align-self: center;
+    /* Login/Register PG */
+    .container#login,
+    .container#register,
+    .container#settings {
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        gap: 20px;
     }
     .typing-header {
-        font-size: 50px;
+        font-size: 40px;
+    }
+    #chat-icon {
+        position: absolute;
+        top: -30px;
+        right: -40px;
+        width: 90px;
+        height: 90px;
     }
     .popup-container {
-        text-align: center;
+        padding: 50px 40px;
+        min-width: 260px;
     }
     form {
         flex-direction: column;
         width: 100%;
     }
-    form input {
+    form input, .primary-btn {
         padding: 20px 20px;
         width: 100%;
     }
-    .primary-btn {
-        width: 100%;
+    /* Chatroom PG */
+    #join-room button {
+        font-size: 15px;
+        padding-left: 30px;
+        padding-right: 30px;
     }
+    /* Settings PG */
+    #settings-heading {
+        gap: 10px;
+
+        img {
+            width: 35px;
+            height: 35px;
+        }
+    }
+    /* Navbar */
     .navbar {
         flex-direction: row;
         align-items: flex-start;
@@ -713,26 +769,12 @@ form {
             animation-delay: 0s;
         }
     }
-    #settings-heading {
-        gap: 15px;
-    }
-    #settings-heading a {
-        padding-top: 5px;
-    }
-    #settings-heading img {
-        width: 30px;
-        height: 30px;
-    }
 }
 
 
 /* Animations */
 @keyframes cursor{
     50% { border-color: transparent }
-}
-
-@keyframes typing{
-    from { width: 0px }
 }
 
 @keyframes join-text-bubble-enter {
