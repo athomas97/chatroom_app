@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 {% include "navbar.html" %}
-<form method="post" class="container chatroom-pg">
+<form method="post" class="container chatroom-pg {% if error %} has-error {% endif %}">
     <div id="join-room">
         <h2 class="header">Join a chatroom...</h2>
-        <div class="text-bubble">
+        <div class="text-bubble {% if error %} error-bubble {% endif %}">
             <div class="bubble-shadow">
                 <div class="bubble-silhouette">
                     <div class="triangle"></div>
@@ -17,12 +17,19 @@
                     name="code"
                     value="{{ code }}"
                     maxlength="4"
+                    autocomplete="off"
                 />
                 <button type="submit" name="join">
                     <h1>+</h1>
                 </button>
             </div>
         </div>
+        {% if error %}
+        <div class="error-msg-container">
+            <img src="/static/images/svg/error.svg" alt="!">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
     </div>
     <div id="create-room">
         <h2 class="header">or...</h2>
@@ -35,8 +42,5 @@
             <h2>Create a Room</h2>
         </button>
     </div>
-    {% if error %}
-    <p>{{ error }}</p>
-    {% endif %}
 </form>
 {% endblock %}
