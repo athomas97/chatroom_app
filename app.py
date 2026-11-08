@@ -116,6 +116,13 @@ def chatroom():
         if create != False:
             room = generate_unique_code(rooms=rooms, code_length=4);
             rooms[room] = {"members": 0, "messages": []}
+        elif len(code) != 4 or not code.isalpha():
+            return render_template(
+                template_name_or_list="chatroom.html",
+                error="Room code must be 4 letters (no numbers or special characters)",
+                code=code,
+                name=name,
+            )
         elif code not in rooms:
             return render_template(
                 template_name_or_list="chatroom.html",
