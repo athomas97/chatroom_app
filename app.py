@@ -1,8 +1,11 @@
 from extensions import db
 from db_models import User
+from sqlalchemy import func
+from sqlalchemy.exc import IntegrityError
 from forms import LoginForm, RegisterForm, DeleteAccountForm
 from common_utils import generate_unique_code
 from socket_events import register_socket_events
+from constants import AUTHENTICATION_MESSAGE
 
 import os
 from dotenv import load_dotenv
@@ -37,6 +40,31 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{database_path}"
 
 db.init_app(app=app)
 
+with app.app_context():
+    db.create_all()
+    with db.engine.begin() as connection:
+        duplicate_username = connection.exec_driver_sql(
+            """
+            SELECT lower(username), COUNT(*)
+            FROM user
+            GROUP BY lower(username)
+            HAVING COUNT(*) > 1
+            LIMIT 1
+            """
+        ).first()
+        if duplicate_username:
+            raise RuntimeError(
+                "Cannot enforce case-insensitive username uniqueness: "
+                f"duplicate usernames normalize to {duplicate_username[0]!r}. "
+                "Resolve the duplicate accounts before starting the app."
+            )
+        connection.exec_driver_sql(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS uq_user_username_lower
+            ON user (lower(username))
+            """
+        )
+
 socketio = SocketIO(app=app)
 
 bcrypt = Bcrypt(app=app)
@@ -61,11 +89,15 @@ def home():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(
-            username=form.username.data).first()
+        user = User.query.filter(
+            func.lower(User.username) == form.username.data.lower()
+        ).first()
         if user and bcrypt.check_password_hash(pw_hash=user.password, password=form.password.data):
             login_user(user=user)
             return redirect(location=url_for(endpoint="chatroom"))
+        form.password.errors.append(
+            AUTHENTICATION_MESSAGE["USERNAME_OR_PASSWORD_INVALID"]
+        )
     return render_template(template_name_or_list="login.html", form=form)
 
 @app.route("/logout", methods=["GET", "POST"])
@@ -85,8 +117,23 @@ def register():
             username=form.username.data,
             password=hashed_password
         )
-        db.session.add(instance=new_user)
-        db.session.commit()
+        try:
+            db.session.add(instance=new_user)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            duplicate_user = User.query.filter(
+                func.lower(User.username) == form.username.data.lower()
+            ).first()
+            if duplicate_user is None:
+                raise
+            form.username.errors.append(
+                AUTHENTICATION_MESSAGE["USERNAME_EXISTS"]
+            )
+            return render_template(
+                template_name_or_list="register.html",
+                form=form,
+            )
         return redirect(location=url_for(endpoint="login"))
 
     return render_template(template_name_or_list="register.html", form=form)
