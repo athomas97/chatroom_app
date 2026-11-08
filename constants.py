@@ -6,3 +6,10 @@ AUTHENTICATION_MESSAGE = {
     "USERNAME_EXISTS": "Username already exists. Please choose a different one",
     "USERNAME_OR_PASSWORD_INVALID": "Invalid username or password",
 }
+
+JOIN_ROOM_MESSAGE = {
+    "NO_USERNAME": "Could not retrieve username",
+    "ROOMCODE_EMPTY": "Please enter a room code",
+    "ROOMCODE_INVALID": "Room code must be 4 letters (no numbers or special characters)",
+    "ROOMCODE_DOESNT_EXIST": "Room does not exist",
+}

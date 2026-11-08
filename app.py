@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from forms import LoginForm, RegisterForm, DeleteAccountForm
 from common_utils import generate_unique_code
 from socket_events import register_socket_events
-from constants import AUTHENTICATION_MESSAGE
+from constants import AUTHENTICATION_MESSAGE, JOIN_ROOM_MESSAGE
 
 import os
 from dotenv import load_dotenv
@@ -149,12 +149,12 @@ def chatroom():
 
         # TODO: Update to send error if we cant access username?
         if not name:
-            print("ERROR: Could not retrieve username")
+            print(JOIN_ROOM_MESSAGE["NO_USERNAME"])
             return redirect(location=url_for(endpoint="login"))
         if join != False and not code:
             return render_template(
                 template_name_or_list="chatroom.html",
-                error="Please enter a room code",
+                error=JOIN_ROOM_MESSAGE["ROOMCODE_EMPTY"],
                 code=code,
                 name=name,
             )
@@ -166,14 +166,14 @@ def chatroom():
         elif len(code) != 4 or not code.isalpha():
             return render_template(
                 template_name_or_list="chatroom.html",
-                error="Room code must be 4 letters (no numbers or special characters)",
+                error=JOIN_ROOM_MESSAGE["ROOMCODE_INVALID"],
                 code=code,
                 name=name,
             )
         elif code not in rooms:
             return render_template(
                 template_name_or_list="chatroom.html",
-                error="Room does not exist",
+                error=JOIN_ROOM_MESSAGE["ROOMCODE_DOESNT_EXIST"],
                 code=code,
                 name=name,
             )
