@@ -42,11 +42,20 @@ h2,
     font-family: "Turret Road", sans-serif;
     font-style: normal;
     font-weight: 500;
+}
+
+h2,
+.join-room-input input,
+.join-room-input button {
     font-size: 20px;
 }
 
 h3 {
     text-align: center;
+}
+
+p {
+    font-size: 15px;
 }
 
 .typing-container {
@@ -134,8 +143,10 @@ button {
 
 .warning-btn {
     color: var(--white);
+    border: 1.5px solid var(--dark-red);
     background-color: var(--dark-red);
     width: fit-content;
+    cursor: pointer;
 }
 
 .popup-btn {
@@ -220,6 +231,11 @@ form {
 
 #settings-body .popup-container {
     width: 100%;
+    div {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
 }
 
 #settings-heading {
