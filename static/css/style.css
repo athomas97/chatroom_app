@@ -277,17 +277,21 @@ form {
 
 .navbar {
     display: flex;
-    flex-direction: column;
     gap: 10px;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: space-between;
     position: absolute;
     top: 0px;
     width: 100%;
-    height: 100%;
-    padding: 20px;
-    pointer-events: none;
-    cursor: pointer;
+    padding: 20px 30px;
 
+    #site-logo {
+        height: 50px;
+    }
+    .drop-down-menu {
+        display: flex;
+        gap: 5px;
+    }
     .user, .menu-item {
         display: flex;
         flex-direction: row;
@@ -298,29 +302,20 @@ form {
         align-items: center;
         justify-content: center;
         border-radius: 30px;
-        pointer-events: auto;
     }
     .user {
         color: var(--white);
         background-color: var(--medium-blue);
         border: 2px solid var(--medium-blue);
-        h2 {
-            color: var(--white);
-        }
-    }
-    .expand-width {
-        transition: padding-left 250ms ease;
-        img,
-        h2 {
-            transition: transform 250ms ease;
-        }
+        cursor: pointer;
+        transition: padding 250ms ease;
+
         &:hover,
         &:focus-visible {
-            padding-left: 50px;
-            img,
-            h2 {
-                transform: translateX(-10px);
-            }
+            padding: 0px 40px;
+        }
+        h2 {
+            color: var(--white);
         }
     }
     .menu-item {
@@ -328,26 +323,42 @@ form {
         background-color: var(--light-blue);
         border: 2px solid var(--medium-blue);
         text-decoration: none;
+        padding: 10px 20px;
+
+        h2 {
+            display: none;
+            font-size: 12px;
+            font-weight: 800;
+            position: absolute;
+            bottom: -5px;
+            padding: 5px 20px;
+            border-radius: 30px;
+            color: var(--medium-blue);
+            border: 2px solid var(--medium-blue);
+            background-color: var(--light-blue);
+        }
+        &:hover h2,
+        &:focus-visible h2 {
+            display: block;
+        }
     }
-    &:not(.is-open):not(.is-closing) .menu-item {
-        visibility: hidden;
-        pointer-events: none;
+    .menu-item:not(.is-open) {
+        display: none;
     }
-    &.is-open .menu-item {
-        visibility: visible;
-        animation: menu-item-enter 0.3s ease-out both;
+    .menu-item.is-open {
+        display: flex;
     }
-    &.is-closing .menu-item {
-        visibility: visible;
-        animation: menu-item-exit 0.3s ease-in both;
-    }
-    &.is-open .menu-item:nth-child(2),
-    &.is-closing .menu-item:nth-child(2) {
-        animation-delay: 0s;
-    }
-    &.is-open .menu-item:nth-child(3),
-    &.is-closing .menu-item:nth-child(3) {
-        animation-delay: 0.1s;
+    .expand-width {
+        transition: padding 250ms ease;
+
+        img,
+        h2 {
+            transition: transform 250ms ease;
+        }
+        &:hover,
+        &:focus-visible {
+            padding: 0px 30px;
+        }
     }
 }
 
@@ -760,70 +771,8 @@ form {
     }
     /* Navbar */
     .navbar {
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: flex-end;
-        gap: 0;
-        transition: gap 0.3s ease;
-        &.is-open {
-            gap: 10px;
-        }
-        &.is-closing {
-            gap: 0;
-        }
-        .menu-item {
-            --icon-width: 20px;
-            --menu-border-width: 2px;
-            --collapsed-width: calc(var(--icon-width) + 60px + 2 * var(--menu-border-width));
-            flex: 0 0 0;
-            min-width: 0;
-            padding: 10px 0;
-            border-width: 0;
-            overflow: visible;
-            transition:
-                flex-basis 250ms ease,
-                padding 250ms ease,
-                border-width 250ms ease;
-            h2 {
-                display: none;
-                font-size: 12px;
-                font-weight: 800;
-                position: absolute;
-                bottom: -35px;
-                padding: 5px 20px;
-                border-radius: 30px;
-                color: var(--medium-blue);
-                border: 2px solid var(--medium-blue);
-                background-color: var(--light-blue);
-            }
-            &:hover h2,
-            &:focus-visible h2 {
-                display: block;
-            }
-        }
-        &.is-open .menu-item {
-            flex-basis: var(--collapsed-width);
-            padding: 10px 30px;
-            border-width: 2px;
-            visibility: visible;
-            animation: mobile-menu-item-enter 0.3s ease-out both;
-        }
-        &.is-closing .menu-item {
-            flex-basis: 0;
-            padding: 10px 0;
-            border-width: 0;
-            visibility: visible;
-            pointer-events: none;
-            animation: mobile-menu-item-exit 0.3s ease-in both;
-        }
-        &.is-open .menu-item:hover,
-        &.is-open .menu-item:focus-visible {
-            flex-basis: calc(var(--collapsed-width) + 20px);
-            padding-left: 50px;
-        }
-        &.is-open .menu-item:nth-child(3),
-        &.is-closing .menu-item:nth-child(3) {
-            animation-delay: 0s;
+        .user h2 {
+            display: none;
         }
     }
 }
