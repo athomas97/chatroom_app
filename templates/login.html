@@ -1,18 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container">
+{% include "navbar.html" %}
+<div class="container" id="login">
     <div class="typing-container">
         <h1 class="typing-header">Welcome...</h1>
     </div>
     <div class="popup-container">
-        <img id="chat-icon" src="/static/images/png/chat.png" alt="chat icon">
-        <h2>Login to start chatting</h2>
-        <form method="POST" action="">
-            {{ form.hidden_tag() }}
-            {{ form.username }}
-            {{ form.password }}
-            {{ form.submit }}
-        </form>
+        <img id="chat-icon" src="/static/images/svg/chat.svg" alt="chat icon">
+        <div class="login-register-form">
+            <h2>Login to start chatting</h2>
+            <form method="POST" action="" novalidate>
+                {{ form.hidden_tag() }}
+                {{ form.username }}
+                {{ form.password }}
+                {{ form.submit }}
+            </form>
+            {% for field in [form.username, form.password] %}
+                {% for error in field.errors %}
+                    <div class="error-msg-container">
+                        <img src="/static/images/svg/error.svg" alt="!">
+                        <p>{{ error }}</p>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
         <a class="link" href="{{ url_for('register') }}">Don't have an account? Register here</a>
     </div>
 </div>

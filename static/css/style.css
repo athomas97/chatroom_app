@@ -3,6 +3,9 @@
   --light-blue: #DCECFC;
   --medium-blue: #324D85;
   --dark-blue: #0d1a33;
+  --light-red: #fddbdb;
+  --medium-red: #f8d2d2;
+  --dark-red: #ff0000;
   --transparent: rgba(223, 223, 223, 0);
 }
 
@@ -32,12 +35,18 @@ h1, h2, h3, h4, h5, p {
     color: var(--medium-blue);
 }
 
+p,
 h2,
 .join-room-input input,
 .join-room-input button {
     font-family: "Turret Road", sans-serif;
     font-style: normal;
     font-weight: 500;
+}
+
+h2,
+.join-room-input input,
+.join-room-input button {
     font-size: 20px;
 }
 
@@ -45,28 +54,24 @@ h3 {
     text-align: center;
 }
 
+p {
+    font-size: 15px;
+}
+
 .typing-container {
     display: inline-block;
     align-self: flex-start;
+    width: 100%;
 }
 
 .typing-header {
     font-size: 80px;
     border-right: 5px solid;
-    width: 100%;
+    width: fit-content;
     white-space: nowrap;
     overflow: hidden;
     animation:
-        typing 2s steps(9),
         cursor .4s step-end infinite alternate;
-}
-
-@keyframes cursor{
-    50% { border-color: transparent }
-}
-
-@keyframes typing{
-    from { width: 0px }
 }
 
 .link {
@@ -87,6 +92,7 @@ h3 {
     flex: 1;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 .container {
@@ -95,16 +101,52 @@ h3 {
     align-items: center;
     justify-content: center;
     gap: 30px;
+    width: 100%;
 }
 
-.primary-btn {
-    color: var(--white);
-    background-color: var(--medium-blue);
+.container#login,
+.container#register,
+.container#settings {
+    padding: 0px 15px;
+    width: 100%;
+    gap: 30px;
+    max-width: 700px;
+}
+
+.container.chatroom-pg {
+    padding: 0px 25px;
+    width: 100%;
+    min-width: 350px;
+    max-width: 600px;
+}
+
+input, button {
+    border-radius: 10px;
+    padding: 10px 20px;
+}
+
+button {
+    outline: none;
+    border: none;
     padding-left: 20px;
     padding-right: 20px;
     cursor: pointer;
     align-self: flex-start;
+}
+
+.primary-btn {
+    cursor: pointer;
+    color: var(--white);
+    background-color: var(--medium-blue);
     width: fit-content;
+}
+
+.warning-btn {
+    color: var(--white);
+    border: 1.5px solid var(--dark-red);
+    background-color: var(--dark-red);
+    width: fit-content;
+    cursor: pointer;
 }
 
 .popup-btn {
@@ -129,8 +171,6 @@ input {
     color: var(--medium-blue);
     background-color: var(--white);
     border: 1.5px solid var(--medium-blue);
-    border-radius: 10px;
-    padding: 10px 20px;
 
     &:focus {
         outline: 1px solid var(--medium-blue);
@@ -169,7 +209,7 @@ form {
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 30px;
     padding: 50px;
     width: fit-content;
     border: 2px solid var(--medium-blue);
@@ -181,6 +221,61 @@ form {
     h2, form, a {
         width: 100%;
     }
+}
+
+.login-register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#settings-body .popup-container {
+    width: 100%;
+    div {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+#settings-heading {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 30px;
+
+    a {
+        padding-top: 10px;
+    }
+    img {
+        width: 50px;
+        height: 50px;
+        transform: translateX(0px);
+        transition: transform 0.1s ease;
+    }
+    img:hover {
+        transform: translateX(-5px);
+    }
+}
+
+#settings-body {
+    display: flex;
+    height: 300px;
+    width: 100%;
+    gap: 15px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.selected-nav-item {
+    content: "";
+    height: 15px;
+    width: 15px;
+    background-color: var(--medium-blue);
 }
 
 #chat-icon {
@@ -198,17 +293,21 @@ form {
 
 .navbar {
     display: flex;
-    flex-direction: column;
     gap: 10px;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: space-between;
     position: absolute;
     top: 0px;
     width: 100%;
-    height: 100%;
-    padding: 20px;
-    pointer-events: none;
-    cursor: pointer;
+    padding: 20px 30px;
 
+    #site-logo {
+        height: 50px;
+    }
+    .drop-down-menu {
+        display: flex;
+        gap: 5px;
+    }
     .user, .menu-item {
         display: flex;
         flex-direction: row;
@@ -219,12 +318,18 @@ form {
         align-items: center;
         justify-content: center;
         border-radius: 30px;
-        pointer-events: auto;
     }
     .user {
         color: var(--white);
         background-color: var(--medium-blue);
         border: 2px solid var(--medium-blue);
+        cursor: pointer;
+        transition: padding 250ms ease;
+
+        &:hover,
+        &:focus-visible {
+            padding: 0px 40px;
+        }
         h2 {
             color: var(--white);
         }
@@ -249,44 +354,42 @@ form {
         background-color: var(--light-blue);
         border: 2px solid var(--medium-blue);
         text-decoration: none;
-    }
-    &:not(.is-open):not(.is-closing) .menu-item {
-        visibility: hidden;
-        pointer-events: none;
-    }
-    &.is-open .menu-item {
-        visibility: visible;
-        animation: menu-item-enter 0.3s ease-out both;
-    }
-    &.is-closing .menu-item {
-        visibility: visible;
-        animation: menu-item-exit 0.3s ease-in both;
-    }
-    &.is-open .menu-item:nth-child(2),
-    &.is-closing .menu-item:nth-child(2) {
-        animation-delay: 0s;
-    }
-    &.is-open .menu-item:nth-child(3),
-    &.is-closing .menu-item:nth-child(3) {
-        animation-delay: 0.1s;
-    }
-}
+        padding: 10px 20px;
 
-@keyframes menu-item-enter {
-    from {
-        transform: translateX(300px);
+        h2 {
+            display: none;
+            font-size: 12px;
+            font-weight: 800;
+            position: absolute;
+            bottom: -5px;
+            padding: 5px 20px;
+            border-radius: 30px;
+            color: var(--medium-blue);
+            border: 2px solid var(--medium-blue);
+            background-color: var(--light-blue);
+        }
+        &:hover h2,
+        &:focus-visible h2 {
+            display: block;
+        }
     }
-    to {
-        transform: translateX(0px);
+    .menu-item:not(.is-open) {
+        display: none;
     }
-}
+    .menu-item.is-open {
+        display: flex;
+    }
+    .expand-width {
+        transition: padding 250ms ease;
 
-@keyframes menu-item-exit {
-    from {
-        transform: translateX(0px);
-    }
-    to {
-        transform: translateX(300px);
+        img,
+        h2 {
+            transition: transform 250ms ease;
+        }
+        &:hover,
+        &:focus-visible {
+            padding: 0px 30px;
+        }
     }
 }
 
@@ -295,7 +398,6 @@ form {
     margin-bottom: 15px;
 }
 
-
 .text-bubble {
     display: flex;
     position: relative;
@@ -303,13 +405,14 @@ form {
     justify-content: center;
     gap: 5px;
     margin-bottom: 15px;
-    width: 500px;
+    width: 100%;
     height: 90px;
     border: none;
     appearance: none;
     isolation: isolate;
     background: transparent;
     transition: transform 0.2s ease;
+
     &:is(button) {
         cursor: pointer;
     }
@@ -345,35 +448,24 @@ form {
     }
 }
 
-#create-room {
-    .header {
-        text-align: right;
-        padding-right: 30px;
-    }
-    .text-bubble:hover {
-        transform: translate(-10px, -10px);
-    }
-    .text-bubble:hover .bubble-shadow {
-        filter: drop-shadow(10px 10px 0 var(--dark-blue));
-    }
-    .triangle, .bubble-silhouette {
-        background: var(--medium-blue);
-    }
-    .triangle {
-        right: -40px;
-        transform: rotate(125deg);
-    }
-    button h2 {
-        text-align: left;
-        padding-left: 70px;
-        color: var(--white);
-    }
+#join-room, #create-room {
+    width: 100%;
 }
 
 #join-room {
+    padding-left: 45px;
+    padding-bottom: 10px;
+
     .header {
         text-align: left;
         padding-left: 30px;
+        animation: join-bubble-heading-enter 650ms ease-out both;
+        animation-delay: 50ms;
+    }
+    .text-bubble {
+        transform-origin: bottom left;
+        animation: join-text-bubble-enter 650ms ease-out both;
+        animation-delay: 0ms;
     }
     .text-bubble:hover {
         transform: translate(10px, -10px);
@@ -401,9 +493,13 @@ form {
     input {
         flex: 1;
         min-width: 0;
-        padding-left: 70px;
+        padding-left: 30px;
         border: none;
         border-radius: inherit;
+    }
+    input:focus {
+        border: none;
+        outline: none;
     }
     .join-room-input:focus-within button,
     .join-room-input input:not(:placeholder-shown) ~ button {
@@ -429,8 +525,6 @@ form {
         padding-right: 40px;
         cursor: pointer;
         background: transparent;
-        outline: none;
-        border: none;
         border-left: 1px solid var(--medium-blue);
         border-top-left-radius: 0px;
         border-top-right-radius: inherit;
@@ -448,6 +542,87 @@ form {
     button:hover h1 {
         transform: scale(1.1);
     }
+    .error-bubble {
+        input, .triangle {
+            background: var(--light-red) !important;
+        }
+        .bubble-silhouette {
+            filter:
+                drop-shadow(2px 0 0 var(--dark-red))
+                drop-shadow(-2px 0 0 var(--dark-red))
+                drop-shadow(0 2px 0 var(--dark-red))
+                drop-shadow(0 -2px 0 var(--dark-red))
+        }
+        button:hover {
+            background-color: var(--medium-red) !important;
+        }
+    }
+    .error-msg-container {
+        margin-top: 20px;
+        padding-left: 30px;
+        animation: join-bubble-heading-enter 650ms ease-out both;
+        animation-delay: 50ms;
+    }
+}
+
+.error-msg-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    text-align: left;
+
+    img {
+        width: 12px;
+        height: 12px;
+    }
+    p {
+        width: 100%;
+        color: var(--dark-red);
+        font-size: 12px;
+    }
+}
+
+#create-room {
+    padding-right: 45px;
+    padding-bottom: 10px;
+
+    .header {
+        text-align: right;
+        padding-right: 30px;
+        animation: text-bubble-heading-enter 650ms ease-out both;
+        animation-delay: 250ms;
+    }
+    .text-bubble {
+        transform-origin: bottom right;
+        animation: create-text-bubble-enter 650ms ease-out both;
+        animation-delay: 200ms;
+    }
+    .text-bubble:hover {
+        transform: translate(-10px, -10px);
+    }
+    .text-bubble:hover .bubble-shadow {
+        filter: drop-shadow(10px 10px 0 var(--dark-blue));
+    }
+    .triangle, .bubble-silhouette {
+        background: var(--medium-blue);
+    }
+    .triangle {
+        right: -40px;
+        transform: rotate(125deg);
+    }
+    button h2 {
+        text-align: left;
+        padding-left: 30px;
+        color: var(--white);
+    }
+}
+
+.chatroom-pg.has-error #join-room .header,
+.chatroom-pg.has-error #join-room .text-bubble,
+.chatroom-pg.has-error #join-room .error-msg-container,
+.chatroom-pg.has-error #create-room .header,
+.chatroom-pg.has-error #create-room .text-bubble {
+    animation: none;
 }
 
 #room {
@@ -576,28 +751,188 @@ form {
 }
 
 @media (max-width: 900px) {
-    .container {
-        gap: 50px;
-    }
-    .typing-container, .link {
-        align-self: center;
+    /* Login/Register PG */
+    .container#login,
+    .container#register,
+    .container#settings {
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        gap: 20px;
     }
     .typing-header {
-        font-size: 50px;
+        font-size: 40px;
+    }
+    #chat-icon {
+        position: absolute;
+        top: -30px;
+        right: -40px;
+        width: 90px;
+        height: 90px;
     }
     .popup-container {
-        text-align: center;
+        padding: 50px 40px;
+        min-width: 260px;
+    }
+    .login-register-form {
+        gap: 20px;
     }
     form {
         flex-direction: column;
         width: 100%;
     }
-    form input {
+    form input, .primary-btn {
         padding: 20px 20px;
         width: 100%;
     }
-    .primary-btn {
-        width: 100%;
+    /* Chatroom PG */
+    #join-room button {
+        font-size: 15px;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    /* Settings PG */
+    #settings-heading {
+        gap: 10px;
+
+        img {
+            width: 35px;
+            height: 35px;
+        }
+    }
+    /* Navbar */
+    .navbar {
+        .user h2 {
+            display: none;
+        }
+    }
+}
+
+
+/* Animations */
+@keyframes cursor{
+    50% { border-color: transparent }
+}
+
+@keyframes join-text-bubble-enter {
+    0% {
+        opacity: 0;
+        transform: rotate(10deg) translateY(50px);
+        animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    20% {
+        opacity: 1;
+    }
+    55% {
+        transform: rotate(-2deg) translateY(-5px);
+        animation-timing-function: cubic-bezier(0.25, 0.7, 0.35, 1);
+    }
+    80% {
+        transform: rotate(1deg) translateY(2px);
+        animation-timing-function: ease-out;
+    }
+    100% {
+        transform: rotate(0deg) translateY(0px);
+    }
+}
+
+@keyframes create-text-bubble-enter {
+    0% {
+        opacity: 0;
+        transform: rotate(-10deg) translateY(50px);
+        animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    20% {
+        opacity: 1;
+    }
+    55% {
+        transform: rotate(2deg) translateY(-5px);
+        animation-timing-function: cubic-bezier(0.25, 0.7, 0.35, 1);
+    }
+    80% {
+        transform: rotate(-1deg) translateY(2px);
+        animation-timing-function: ease-out;
+    }
+    100% {
+        transform: rotate(0deg) translateY(0px);
+    }
+}
+
+@keyframes join-bubble-heading-enter {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+        animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    20% {
+        opacity: 1;
+    }
+    55% {
+        transform: translateY(-7px);
+        animation-timing-function: cubic-bezier(0.25, 0.7, 0.35, 1);
+    }
+    80% {
+        transform: translateY(3px);
+        animation-timing-function: ease-out;
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes text-bubble-heading-enter {
+    0% {
+        opacity: 0;
+        transform: translateY(100px);
+        animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    55% {
+        opacity: 1;
+        transform: translateY(-7px);
+        animation-timing-function: cubic-bezier(0.25, 0.7, 0.35, 1);
+    }
+    80% {
+        transform: translateY(3px);
+        animation-timing-function: ease-out;
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes menu-item-enter {
+    from {
+        transform: translateX(300px);
+    }
+    to {
+        transform: translateX(0px);
+    }
+}
+
+@keyframes menu-item-exit {
+    from {
+        transform: translateX(0px);
+    }
+    to {
+        transform: translateX(300px);
+    }
+}
+
+@keyframes mobile-menu-item-enter {
+    from {
+        transform: translateX(300px);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes mobile-menu-item-exit {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(300px);
     }
     .navbar {
         flex-direction: row;
