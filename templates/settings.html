@@ -27,11 +27,13 @@
                 src="/static/images/svg/delete_account.svg"
                 alt="chat icon"
             >
-            <h2>Delete Account</h2>
-            <p>
-                Permenantly delete your account.
-                This action is irreversable.
-            </p>
+            <div>
+                <h2>Delete Account</h2>
+                <p>
+                    Permenantly delete your account.
+                    This action is irreversable.
+                </p>
+            </div>
             <form
                 method="POST"
                 action="{{ url_for('delete_account') }}"
