@@ -3,8 +3,9 @@
         <img id="site-logo" src="/static/images/png/logo.png" alt="logo">
     </a>
     {% if request.endpoint not in ('login', 'register') %}
+    <div class="navbar-overlay" aria-hidden="true"></div>
     <div class="drop-down-menu">
-        <div class="user" id="user-menu-trigger">
+        <div class="user popup-btn" id="user-menu-trigger">
             <h2>{{ current_user.username }}</h2>
             <img
                 src="/static/images/svg/hamburger_button.svg"
@@ -17,6 +18,7 @@
                 src="/static/images/svg/settings.svg"
                 alt="settings icon"
                 class="icon"
+                id="settings-menu-icon"
             >
             <h2>Settings</h2>
         </a>
@@ -25,6 +27,7 @@
                 src="/static/images/svg/logout.svg"
                 alt="logout icon"
                 class="icon"
+                id="logout-menu-icon"
             >
             <h2>Logout</h2>
         </a>
@@ -32,26 +35,70 @@
     {% endif %}
 </div>
 <script>
-    const userMenuTrigger = document.getElementById("user-menu-trigger");
-    const menuItems = document.querySelectorAll("#navbar .menu-item");
+    (() => {
+        const userMenuTrigger = document.getElementById("user-menu-trigger");
+        const menu = document.querySelector("#navbar .drop-down-menu, #navbar .side-bar");
+        const navbar = document.getElementById("navbar");
+        if (!userMenuTrigger || !menu || !navbar) return;
 
-    userMenuTrigger.addEventListener("click", () => {
-        menuItems.forEach((menuItem) => {
-            menuItem.classList.toggle("is-open");
+        const menuItems = menu.querySelectorAll(".menu-item");
+        const settingsIcon = document.getElementById("settings-menu-icon");
+        const logoutIcon = document.getElementById("logout-menu-icon");
+        const mobileViewport = window.matchMedia("(max-width: 650px)");
+
+        const setMenuIcons = (isSidebar) => {
+            settingsIcon.src = isSidebar
+                ? "/static/images/svg/settings_white.svg"
+                : "/static/images/svg/settings.svg";
+            logoutIcon.src = isSidebar
+                ? "/static/images/svg/logout_white.svg"
+                : "/static/images/svg/logout.svg";
+        };
+
+        const setMenuOpen = (isOpen) => {
+            menuItems.forEach((menuItem) => {
+                menuItem.classList.toggle("is-open", isOpen);
+            });
+        };
+
+        const closeMenu = () => {
+            setMenuOpen(false);
+            menu.classList.remove("side-bar");
+            menu.classList.add("drop-down-menu");
+            navbar.classList.remove("has-sidebar");
+            userMenuTrigger.classList.add("popup-btn");
+            setMenuIcons(false);
+        };
+
+        userMenuTrigger.addEventListener("click", () => {
+            if (mobileViewport.matches) {
+                if (menu.classList.contains("side-bar")) {
+                    closeMenu();
+                } else {
+                    menu.classList.remove("drop-down-menu");
+                    menu.classList.add("side-bar");
+                    navbar.classList.add("has-sidebar");
+                    userMenuTrigger.classList.remove("popup-btn");
+                    setMenuIcons(true);
+                    setMenuOpen(true);
+                }
+                return;
+            }
+
+            menu.classList.remove("side-bar");
+            menu.classList.add("drop-down-menu");
+            userMenuTrigger.classList.add("popup-btn");
+            setMenuOpen(!menuItems[0].classList.contains("is-open"));
         });
-    });
 
-    document.addEventListener("click", (event) => {
-        const target = event.target;
-        if (
-            userMenuTrigger.contains(target) ||
-            Array.from(menuItems).some((menuItem) => menuItem.contains(target))
-        ) {
-            return;
-        }
-
-        menuItems.forEach((menuItem) => {
-            menuItem.classList.remove("is-open");
+        document.addEventListener("click", (event) => {
+            if (!menu.contains(event.target)) {
+                closeMenu();
+            }
         });
-    });
+
+        mobileViewport.addEventListener("change", () => {
+            closeMenu();
+        });
+    })();
 </script>
