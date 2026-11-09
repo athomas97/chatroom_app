@@ -1,77 +1,57 @@
 <div class="navbar" id="navbar">
-    <div class="user expand-width" id="user-menu-trigger">
-        <h2>{{ current_user.username }}</h2>
-        <img
-            src="/static/images/svg/hamburger_button.svg"
-            alt="dropdown icon"
-            class="icon"
-        >
+    <a href="{{ url_for('home') }}">
+        <img id="site-logo" src="/static/images/png/logo.png" alt="logo">
+    </a>
+    {% if request.endpoint not in ('login', 'register') %}
+    <div class="drop-down-menu">
+        <div class="user" id="user-menu-trigger">
+            <h2>{{ current_user.username }}</h2>
+            <img
+                src="/static/images/svg/hamburger_button.svg"
+                alt="dropdown icon"
+                class="icon"
+            >
+        </div>
+        <a class="menu-item expand-width" href="{{ url_for('settings') }}">
+            <img
+                src="/static/images/svg/settings.svg"
+                alt="settings icon"
+                class="icon"
+            >
+            <h2>Settings</h2>
+        </a>
+        <a class="menu-item expand-width" href="{{ url_for('logout') }}">
+            <img
+                src="/static/images/svg/logout.svg"
+                alt="logout icon"
+                class="icon"
+            >
+            <h2>Logout</h2>
+        </a>
     </div>
-    <a class="menu-item expand-width" href="{{ url_for('settings') }}">
-        <img
-            src="/static/images/svg/settings.svg"
-            alt="settings icon"
-            class="icon"
-        >
-        <h2>Settings</h2>
-    </a>
-    <a class="menu-item expand-width" href="{{ url_for('logout') }}">
-        <img
-            src="/static/images/svg/logout.svg"
-            alt="logout icon"
-            class="icon"
-        >
-        <h2>Logout</h2>
-    </a>
+    {% endif %}
 </div>
 <script>
-    const trigger = document.getElementById("user-menu-trigger");
-    function updateUserMenuTriggerClass() {
-        if (window.innerWidth <= 900) {
-            trigger.classList.remove("popup-btn");
-            trigger.classList.add("expand-width");
-        } else {
-            trigger.classList.remove("expand-width");
-            trigger.classList.add("popup-btn");
-        }
-    }
-    window.addEventListener("resize", updateUserMenuTriggerClass);
-    window.addEventListener("DOMContentLoaded", updateUserMenuTriggerClass);
+    const userMenuTrigger = document.getElementById("user-menu-trigger");
+    const menuItems = document.querySelectorAll("#navbar .menu-item");
 
-    const navbar = document.getElementById("navbar");
-    let pendingExitAnimations = 0;
-    const closeMenu = () => {
-        if (!navbar.classList.contains("is-open")) return;
-        pendingExitAnimations = navbar.querySelectorAll(".menu-item").length;
-        navbar.classList.remove("is-open");
-        navbar.classList.add("is-closing");
-    };
-
-    trigger.addEventListener("click", () => {
-        if (navbar.classList.contains("is-open")) {
-            closeMenu();
-        } else {
-            navbar.classList.remove("is-closing");
-            navbar.classList.add("is-open");
-        }
+    userMenuTrigger.addEventListener("click", () => {
+        menuItems.forEach((menuItem) => {
+            menuItem.classList.toggle("is-open");
+        });
     });
 
     document.addEventListener("click", (event) => {
         const target = event.target;
-        if (trigger.contains(target) || target.closest(".menu-item")) return;
-        closeMenu();
-    });
-
-    navbar.addEventListener("animationend", (event) => {
         if (
-            event.target.matches(".menu-item") &&
-            ["menu-item-exit", "mobile-menu-item-exit"].includes(event.animationName) &&
-            navbar.classList.contains("is-closing")
+            userMenuTrigger.contains(target) ||
+            Array.from(menuItems).some((menuItem) => menuItem.contains(target))
         ) {
-            pendingExitAnimations -= 1;
-            if (pendingExitAnimations === 0) {
-                navbar.classList.remove("is-closing");
-            }
+            return;
         }
+
+        menuItems.forEach((menuItem) => {
+            menuItem.classList.remove("is-open");
+        });
     });
 </script>
