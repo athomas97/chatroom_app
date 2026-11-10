@@ -10,7 +10,7 @@
                     src="/static/images/svg/leave_room.svg"
                     alt=""
                 >
-                <h2>Leave Room</h2>
+                <h2>Leave</h2>
             </a>
         </div>
         <div id="messages-container">
@@ -49,7 +49,7 @@
     const typingIndicator = document.getElementById("user-is-typing");
     const messageInput = document.getElementById("message");
     const typingUsers = new Map();
-    let lastMessageSender = null;
+    let currentMessageGroup = null;
     let typingTimer;
 
     const scrollChatToBottom = () => {
@@ -93,19 +93,9 @@
             msg === "has entered the room" ||
             msg === "has left the room";
 
-        if (
-            isReceived &&
-            !isSystemNotice &&
-            name !== lastMessageSender
-        ) {
-            const senderLabel = document.createElement("strong");
-            senderLabel.className = "message-sender";
-            senderLabel.textContent = name;
-            messages.appendChild(senderLabel);
-        }
-
         const bubble = document.createElement("div");
         if (isSystemNotice) {
+            currentMessageGroup = null;
             bubble.className = "user-status";
             const leftRule = document.createElement("hr");
             const notice = document.createElement("span");
@@ -127,9 +117,32 @@
             const messageText = document.createElement("span");
             messageText.textContent = msg;
             bubble.appendChild(messageText);
+
+            if (
+                !currentMessageGroup ||
+                currentMessageGroup.dataset.sender !== name
+            ) {
+                currentMessageGroup = document.createElement("div");
+                currentMessageGroup.className = `message-group ${
+                    isReceived ? "received" : "sent"
+                }`;
+                currentMessageGroup.dataset.sender = name;
+
+                if (isReceived) {
+                    const senderLabel = document.createElement("strong");
+                    senderLabel.className = "message-sender";
+                    senderLabel.textContent = name;
+                    currentMessageGroup.appendChild(senderLabel);
+                }
+
+                messages.appendChild(currentMessageGroup);
+            }
+
+            currentMessageGroup.appendChild(bubble);
         }
-        messages.appendChild(bubble);
-        lastMessageSender = isSystemNotice ? null : name;
+        if (isSystemNotice) {
+            messages.appendChild(bubble);
+        }
         scrollChatToBottom();
     };
 
@@ -174,7 +187,7 @@
 </script>
 {% for msg in messages %}
     <script type="text/javascript">
-        createMessage("{{ msg.name }}", "{{ msg.message }}");
+        createMessage({{ msg.name|tojson }}, {{ msg.message|tojson }});
     </script>
 {% endfor %}
 {% endblock %}

@@ -35,8 +35,8 @@ h1, h2, h3, h4, h5, p {
     color: var(--medium-blue);
 }
 
-p,
-h2,
+p, h2, span, button,
+#message, .message-sender,
 .join-room-input input,
 .join-room-input button {
     font-family: "Turret Road", sans-serif;
@@ -98,8 +98,8 @@ p {
 .container {
     display: flex;
     flex-direction: column;
-    align-items: center;
     flex: 1;
+    align-items: center;
     justify-content: center;
     gap: 30px;
 }
@@ -612,10 +612,13 @@ form {
     .message-box {
         display: flex;
         flex-direction: column;
-        height: 100%;
         width: 100%;
-        border: 2px solid var(--dark-blue);
+        height: 100vh;
+        height: 100dvh;
         background-color: var(--light-blue);
+    }
+    .message-group {
+        gap: 0px;
     }
     .room-header {
         display: flex;
@@ -623,7 +626,7 @@ form {
         justify-content: space-between;
         padding: 10px;
         background-color: var(--medium-blue);
-        border-bottom: 2px solid var(--dark-blue);
+        border-bottom: 1px solid var(--dark-blue);
 
         h2 {
             color: var(--white);
@@ -634,7 +637,7 @@ form {
         align-items: center;
         gap: 10px;
         padding: 5px 15px;
-        border: 1.5px solid var(--white);
+        border: 1px solid var(--white);
         border-radius: 5px;
         text-decoration: none;
     }
@@ -644,7 +647,7 @@ form {
     }
     #messages-container {
         flex: 1;
-        padding: 15px 0;
+        padding: 10px 0;
         overflow-y: scroll;
         scrollbar-color:
             var(--medium-blue)
@@ -670,33 +673,37 @@ form {
         flex-direction: column;
         color: var(--medium-blue);
     }
+    .message-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin: 25px 0px;
+        width: 100%;
+    }
     .text-bubble-recieved,
     .text-bubble-sent {
         width: fit-content;
-        max-width: 600px;
+        max-width: 45%;
         overflow-wrap: anywhere;
-        margin-bottom: 10px;
         padding: 10px 20px;
         border: 1.5px solid var(--medium-blue);
     }
     .text-bubble-recieved {
         align-self: start;
-        margin-left: 10px;
+        margin: 0px 10px;
         border-radius: 10px 10px 10px 0px;
         background-color: var(--white);
     }
     .text-bubble-sent {
         align-self: end;
-        margin-right: 10px;
+        margin: 0px 10px;
         color: var(--white);
         border-radius: 10px 10px 0px 10px;
         background-color: var(--medium-blue);
     }
     .message-sender {
         margin-left: 20px;
-        margin-bottom: 10px;
         font-size: 13px;
-        line-height: 0.5;
     }
     .user-status {
         display: flex;
@@ -731,6 +738,9 @@ form {
 }
 
 @media (max-width: 650px) {
+    .container {
+        justify-content: flex-start;
+    }
     /* Login/Register PG */
     .container#login,
     .container#register,
@@ -766,6 +776,12 @@ form {
         width: 100%;
     }
     /* Chatroom PG */
+    #room {
+        .text-bubble-recieved,
+        .text-bubble-sent {
+            max-width: 100%;
+        }
+    }
     #join-room button {
         font-size: 15px;
         padding-left: 30px;
@@ -790,6 +806,8 @@ form {
         opacity: 0.7;
     }
     .navbar {
+        margin-bottom: 20px;
+
         .navbar-overlay {
             display: none;
         }
