@@ -737,6 +737,20 @@ form {
     }
 }
 
+@media (max-width: 400px) {
+    #join-room {
+        button {
+            font-size: 15px;
+            padding-left: 35px;
+            padding-right: 35px;
+        }
+    }
+    .join-room-input input,
+    #create-room button h2 {
+        font-size: 15px;
+    }
+}
+
 @media (max-width: 650px) {
     .container {
         justify-content: flex-start;
@@ -781,11 +795,6 @@ form {
         .text-bubble-sent {
             max-width: 100%;
         }
-    }
-    #join-room button {
-        font-size: 15px;
-        padding-left: 30px;
-        padding-right: 30px;
     }
     /* Settings PG */
     #settings-heading {
