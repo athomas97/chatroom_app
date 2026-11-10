@@ -1,6 +1,7 @@
 from extensions import db
 from db_models import User
 from sqlalchemy import func, inspect, select
+from sqlalchemy.engine import make_url
 from sqlalchemy.exc import IntegrityError
 from forms import LoginForm, RegisterForm, DeleteAccountForm
 from common_utils import generate_unique_code
@@ -36,9 +37,14 @@ if not app.config["SECRET_KEY"]:
     raise RuntimeError("Set the CHATROOM_SECRET_KEY environment variable.")
 
 database_path = Path(__file__).resolve().parent / "database.db"
-app.config["SQLALCHEMY_DATABASE_URI"] = (
-    os.environ.get("DATABASE_URL") or f"sqlite:///{database_path}"
-)
+database_url = os.environ.get("DATABASE_URL")
+if database_url:
+    database_uri = make_url(database_url)
+    if database_uri.drivername in {"postgres", "postgresql"}:
+        database_uri = database_uri.set(drivername="postgresql+psycopg")
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_uri
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{database_path}"
 
 db.init_app(app=app)
 
@@ -87,6 +93,22 @@ register_socket_events(socketio=socketio, rooms=rooms)
 def load_user(user_id):
     return db.session.get(entity=User, ident=int(user_id))
 
+def decode_stored_password_hash(stored_hash):
+    if len(stored_hash) != 122 or not stored_hash.startswith(r"\x"):
+        return stored_hash
+
+    try:
+        decoded_hash = bytes.fromhex(stored_hash[2:]).decode("ascii")
+    except (ValueError, UnicodeDecodeError):
+        return stored_hash
+
+    is_bcrypt_hash = len(decoded_hash) == 60 and decoded_hash.startswith(
+        ("$2a$", "$2b$", "$2y$")
+    )
+    if is_bcrypt_hash:
+        return decoded_hash
+    return stored_hash
+
 @app.route("/")
 def home():
     if current_user.is_authenticated:
@@ -100,7 +122,12 @@ def login():
         user = User.query.filter(
             func.lower(User.username) == form.username.data.lower()
         ).first()
+        stored_hash = user.password if user else None
+        if user:
+            user.password = decode_stored_password_hash(stored_hash)
         if user and bcrypt.check_password_hash(pw_hash=user.password, password=form.password.data):
+            if stored_hash != user.password:
+                db.session.commit()
             login_user(user=user)
             return redirect(location=url_for(endpoint="chatroom"))
         form.password.errors.append(
@@ -121,6 +148,8 @@ def register():
         hashed_password = bcrypt.generate_password_hash(
             password=form.password.data
         )
+        if isinstance(hashed_password, bytes):
+            hashed_password = hashed_password.decode("utf-8")
         new_user = User(
             username=form.username.data,
             password=hashed_password
