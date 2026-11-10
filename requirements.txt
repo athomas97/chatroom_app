@@ -1,0 +1,9 @@
+Flask
+Flask-Bcrypt
+Flask-Login
+Flask-SocketIO
+Flask-SQLAlchemy
+Flask-WTF
+python-dotenv
+SQLAlchemy
+WTForms
