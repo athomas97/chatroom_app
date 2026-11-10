@@ -755,6 +755,10 @@ form {
     .container {
         justify-content: flex-start;
     }
+    .container#login,
+    .container#register {
+        justify-content: center;
+    }
     /* Login/Register PG */
     .container#login,
     .container#register,
