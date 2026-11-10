@@ -1,6 +1,6 @@
 from extensions import db
 from db_models import User
-from sqlalchemy import func
+from sqlalchemy import func, inspect, select
 from sqlalchemy.exc import IntegrityError
 from forms import LoginForm, RegisterForm, DeleteAccountForm
 from common_utils import generate_unique_code
@@ -36,34 +36,42 @@ if not app.config["SECRET_KEY"]:
     raise RuntimeError("Set the CHATROOM_SECRET_KEY environment variable.")
 
 database_path = Path(__file__).resolve().parent / "database.db"
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{database_path}"
+app.config["SQLALCHEMY_DATABASE_URI"] = (
+    os.environ.get("DATABASE_URL") or f"sqlite:///{database_path}"
+)
 
 db.init_app(app=app)
 
-with app.app_context():
-    db.create_all()
-    with db.engine.begin() as connection:
-        duplicate_username = connection.exec_driver_sql(
-            """
-            SELECT lower(username), COUNT(*)
-            FROM user
-            GROUP BY lower(username)
-            HAVING COUNT(*) > 1
-            LIMIT 1
-            """
+@app.cli.command("init-db")
+def init_db():
+    """Create missing database tables and indexes."""
+    user_table_exists = inspect(db.engine).has_table(User.__tablename__)
+    if user_table_exists:
+        duplicate_username = db.session.execute(
+            select(func.lower(User.username), func.count())
+            .group_by(func.lower(User.username))
+            .having(func.count() > 1)
+            .limit(1)
         ).first()
         if duplicate_username:
             raise RuntimeError(
                 "Cannot enforce case-insensitive username uniqueness: "
                 f"duplicate usernames normalize to {duplicate_username[0]!r}. "
-                "Resolve the duplicate accounts before starting the app."
+                "Resolve the duplicate accounts before initializing the database."
             )
-        connection.exec_driver_sql(
-            """
-            CREATE UNIQUE INDEX IF NOT EXISTS uq_user_username_lower
-            ON user (lower(username))
-            """
-        )
+
+    db.create_all()
+    if user_table_exists:
+        if db.engine.dialect.name == "sqlite":
+            with db.engine.begin() as connection:
+                connection.exec_driver_sql(
+                    "CREATE UNIQUE INDEX IF NOT EXISTS uq_user_username_lower "
+                    "ON user (lower(username))"
+                )
+        else:
+            for index in User.__table__.indexes:
+                index.create(bind=db.engine, checkfirst=True)
+    print("Database tables and indexes are initialized.")
 
 socketio = SocketIO(app=app)
 
@@ -220,4 +228,9 @@ def delete_account():
     return redirect(location=url_for(endpoint="login"))
 
 if __name__ == "__main__":
-    socketio.run(app=app, debug=True)
+    socketio.run(
+        app,
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", "5000")),
+        debug=False,
+    )
