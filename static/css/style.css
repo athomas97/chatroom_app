@@ -155,11 +155,6 @@ button {
     transform: translateY(0px);
     transition: box-shadow 0.2s ease,
                 transform 0.2s ease;
-
-    &:hover {
-        box-shadow: 5px 5px 0px var(--dark-blue);
-        transform: translate(-5px, -5px);
-    }
 }
 
 .inputs {
@@ -188,7 +183,6 @@ input {
 
 input:autofill,
 input:-webkit-autofill,
-input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
     box-shadow: 0 0 0 1000px var(--white) inset;
     -webkit-box-shadow: 0 0 0 1000px var(--white) inset;
@@ -252,9 +246,6 @@ form {
         height: 50px;
         transform: translateX(0px);
         transition: transform 0.1s ease;
-    }
-    img:hover {
-        transform: translateX(-5px);
     }
 }
 
@@ -348,7 +339,6 @@ form {
             border: 2px solid var(--medium-blue);
             background-color: var(--light-blue);
         }
-        &:hover h2,
         &:focus-visible h2 {
             display: block;
         }
@@ -366,7 +356,6 @@ form {
         h2 {
             transition: transform 250ms ease;
         }
-        &:hover,
         &:focus-visible {
             padding: 0px 30px;
         }
@@ -447,12 +436,6 @@ form {
         animation: join-text-bubble-enter 650ms ease-out both;
         animation-delay: 0ms;
     }
-    .text-bubble:hover {
-        transform: translate(10px, -10px);
-    }
-    .text-bubble:hover .bubble-shadow {
-        filter: drop-shadow(-10px 10px 0 var(--dark-blue));
-    }
     .triangle, .bubble-silhouette {
         background: var(--white);
     }
@@ -511,16 +494,10 @@ form {
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: inherit;
     }
-    button:hover {
-        background-color: rgb(250, 250, 250);
-    }
     button h1 {
         display: inline-block;
         transform: scale(1);
         transition: transform 0.2s ease;
-    }
-    button:hover h1 {
-        transform: scale(1.1);
     }
     .error-bubble {
         input, .triangle {
@@ -532,9 +509,6 @@ form {
                 drop-shadow(-2px 0 0 var(--dark-red))
                 drop-shadow(0 2px 0 var(--dark-red))
                 drop-shadow(0 -2px 0 var(--dark-red))
-        }
-        button:hover {
-            background-color: var(--medium-red) !important;
         }
     }
     .error-msg-container {
@@ -576,12 +550,6 @@ form {
         transform-origin: bottom right;
         animation: create-text-bubble-enter 650ms ease-out both;
         animation-delay: 200ms;
-    }
-    .text-bubble:hover {
-        transform: translate(-10px, -10px);
-    }
-    .text-bubble:hover .bubble-shadow {
-        filter: drop-shadow(10px 10px 0 var(--dark-blue));
     }
     .triangle, .bubble-silhouette {
         background: var(--medium-blue);
@@ -664,9 +632,6 @@ form {
         background: var(--medium-blue);
         border: 2px solid var(--light-blue);
         border-radius: 5px;
-    }
-    #messages-container::-webkit-scrollbar-thumb:hover {
-        background: var(--dark-blue);
     }
     .messages {
         display: flex;
@@ -875,6 +840,52 @@ form {
                 display: flex;
             }
         }
+    }
+}
+
+/* Hover Animations */
+@media (hover: hover) {
+    .popup-btn:hover {
+        box-shadow: 5px 5px 0px var(--dark-blue);
+        transform: translate(-5px, -5px);
+    }
+    input:-webkit-autofill:hover {
+        box-shadow: 0 0 0 1000px var(--white) inset;
+        -webkit-box-shadow: 0 0 0 1000px var(--white) inset;
+        -webkit-text-fill-color: var(--medium-blue);
+    }
+    #settings-heading img:hover {
+        transform: translateX(-5px);
+    }
+    .navbar .menu-item:hover h2 {
+        display: block;
+    }
+    .navbar .expand-width:hover {
+        padding: 0px 30px;
+    }
+    #join-room .text-bubble:hover {
+        transform: translate(10px, -10px);
+    }
+    #join-room .text-bubble:hover .bubble-shadow {
+        filter: drop-shadow(-10px 10px 0 var(--dark-blue));
+    }
+    #join-room button:hover {
+        background-color: rgb(250, 250, 250);
+    }
+    #join-room button:hover h1 {
+        transform: scale(1.1);
+    }
+    #join-room .error-bubble button:hover {
+        background-color: var(--medium-red) !important;
+    }
+    #create-room .text-bubble:hover {
+        transform: translate(-10px, -10px);
+    }
+    #create-room .text-bubble:hover .bubble-shadow {
+        filter: drop-shadow(10px 10px 0 var(--dark-blue));
+    }
+    #room #messages-container::-webkit-scrollbar-thumb:hover {
+        background: var(--dark-blue);
     }
 }
 
