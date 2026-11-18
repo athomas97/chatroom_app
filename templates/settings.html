@@ -34,15 +34,56 @@
                     This action is irreversable.
                 </p>
             </div>
-            <form
-                method="POST"
-                action="{{ url_for('delete_account') }}"
-                onsubmit="return confirm('Permanently delete your account? This cannot be undone.');"
+            <button
+                class="warning-btn popup-btn open-modal-btn"
+                type="button"
             >
-                {{ form.hidden_tag() }}
-                {{ form.delete }}
-            </form>
+                Delete Account
+            </button>
+        </div>
+    </div>
+    <div class="modal-wrapper" style="display: none;">
+        <div class="modal">
+            <div style="flex-direction: column;">
+                <p class="x">X</p>
+                <img src="/static/images/svg/warning.svg" alt="!">
+                <h2>Are you sure?</h2>
+                <p>Once you delete your account it cannot be recovered</p>
+            </div>
+            <div>
+                <button
+                    class="close-btn secondary-btn popup-btn"
+                    type="button"
+                >
+                    Cancel
+                </button>
+                <form
+                    method="POST"
+                    action="{{ url_for('delete_account') }}"
+                >
+                    {{ form.hidden_tag() }}
+                    {{ form.delete }}
+                </form>
+            </div>
         </div>
     </div>
 </div>
+<script>
+    const modalWrapper = document.querySelector(".modal-wrapper");
+
+    const openModalBtn = document.querySelector(".open-modal-btn");
+    openModalBtn.addEventListener("click", () => {
+        modalWrapper.style.display = "flex";
+    });
+
+    const closeModalX = document.querySelector(".modal .x");
+    closeModalX.addEventListener("click", () => {
+        modalWrapper.style.display = "none";
+    });
+
+    const closeModalBtn = document.querySelector(".modal .close-btn");
+    closeModalBtn.addEventListener("click", () => {
+        modalWrapper.style.display = "none";
+    });
+</script>
 {% endblock %}

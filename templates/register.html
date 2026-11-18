@@ -26,5 +26,49 @@
         </div>
         <a href="{{ url_for('login') }}">Already have an account? Log in here</a>
     </div>
+    {% set registration_success = get_flashed_messages(category_filter=["registration_success"]) %}
+    {% if registration_success %}
+    <div class="modal-wrapper">
+        <div class="modal">
+            <div style="flex-direction: column;">
+                <p class="x">X</p>
+                <img src="/static/images/svg/success.svg" alt="!">
+                <h2>Your Account has been Registered!</h2>
+                <p>You can now login to your account to start chatting with others</p>
+            </div>
+            <div>
+                <button
+                    class="close-btn secondary-btn popup-btn"
+                    type="button"
+                >
+                    Close
+                </button>
+                <a href="{{ url_for('login') }}">
+                    <button
+                        class="primary-btn popup-btn"
+                        type="button"
+                    >
+                        Login
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
+{% if registration_success %}
+<script>
+    const modalWrapper = document.querySelector(".modal-wrapper");
+
+    const closeModalX = document.querySelector(".modal .x");
+    closeModalX.addEventListener("click", () => {
+        modalWrapper.style.display = "none";
+    });
+
+    const closeModalBtn = document.querySelector(".modal .close-btn");
+    closeModalBtn.addEventListener("click", () => {
+        modalWrapper.style.display = "none";
+    });
+</script>
+{% endif %}
 {% endblock %}

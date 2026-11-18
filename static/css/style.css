@@ -95,6 +95,45 @@ p {
     overflow: hidden;
 }
 
+.modal {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    z-index: 100;
+    padding: 20px;
+    min-height: 300px;
+    border-radius: 15px;
+    background-color: var(--white);
+    border: 3px solid var(--dark-blue);
+
+    .x {
+        cursor: pointer;
+        align-self: flex-end;
+        width: fit-content;
+    }
+    img {
+        max-height: 150px;
+    }
+    button {
+        min-height: 50px;
+        min-width: 250px;
+    }
+    div {
+        display: flex;
+        gap: 20px;
+    }
+}
+
+.modal-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+    background-color: rgba(9, 9, 45, 0.8);
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -139,6 +178,13 @@ button {
     color: var(--white);
     background-color: var(--medium-blue);
     width: fit-content;
+}
+
+.secondary-btn {
+    cursor: pointer;
+    background-color: var(--white);
+    border: 1.5px solid var(--medium-blue);
+    color: var(--medium-blue);
 }
 
 .warning-btn {
@@ -717,9 +763,6 @@ form {
 }
 
 @media (max-width: 650px) {
-    .container {
-        justify-content: flex-start;
-    }
     .container#login,
     .container#register {
         justify-content: center;
@@ -757,6 +800,20 @@ form {
     form input, .primary-btn {
         padding: 20px 20px;
         width: 100%;
+    }
+    .modal {
+        width: 100%;
+        min-height: 100dvh;
+        border-radius: 0;
+        border: none;
+
+        button {
+            width: 100%;
+            min-width: 50px;
+        }
+        div {
+            flex-direction: column;
+        }
     }
     /* Chatroom PG */
     #room {
