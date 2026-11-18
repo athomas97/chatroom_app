@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 from flask import (
     Flask,
+    flash,
     redirect,
     render_template,
     url_for,
@@ -171,7 +172,8 @@ def register():
                 template_name_or_list="register.html",
                 form=form,
             )
-        return redirect(location=url_for(endpoint="login"))
+        flash("Your account has been registered.", "registration_success")
+        return redirect(location=url_for(endpoint="register"))
 
     return render_template(template_name_or_list="register.html", form=form)
 
