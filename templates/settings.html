@@ -85,5 +85,11 @@
     closeModalBtn.addEventListener("click", () => {
         modalWrapper.style.display = "none";
     });
+
+    modalWrapper.addEventListener("click", (event) => {
+        if (event.target === modalWrapper) {
+            modalWrapper.style.display = "none";
+        }
+    });
 </script>
 {% endblock %}

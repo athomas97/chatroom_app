@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 {% include "navbar.html" %}
-<form method="post" class="container chatroom-pg {% if error %} has-error {% endif %}">
+<form
+    method="post"
+    class="container chatroom-pg {% if error %} has-error {% endif %}"
+    style="overflow: hidden;"
+>
     <div id="join-room">
         <h2 class="header">Join a chatroom...</h2>
         <div class="text-bubble {% if error %} error-bubble {% endif %}">
@@ -17,6 +21,7 @@
                     name="code"
                     value="{{ code }}"
                     maxlength="4"
+                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                     autocomplete="off"
                 />
                 <button type="submit" name="join">
