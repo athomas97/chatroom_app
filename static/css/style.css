@@ -15,9 +15,14 @@
     box-sizing: border-box;
 }
 
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
 html,
 body {
-    min-height: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
     margin: 0px;
 }
 
@@ -92,7 +97,9 @@ p {
     flex-direction: column;
     flex: 1;
     align-items: center;
-    overflow: hidden;
+    /* overflow: hidden; */
+    min-height: 0;
+    overflow-y: auto;
 }
 
 .modal {
@@ -114,7 +121,7 @@ p {
     img {
         max-height: 150px;
     }
-    button {
+    .warning-btn, button {
         min-height: 50px;
         min-width: 250px;
     }
@@ -191,7 +198,7 @@ button {
     color: var(--white);
     border: 1.5px solid var(--dark-red);
     background-color: var(--dark-red);
-    width: fit-content;
+    /* width: fit-content; */
     cursor: pointer;
 }
 
@@ -807,7 +814,7 @@ form {
         border-radius: 0;
         border: none;
 
-        button {
+        .warning-btn, button {
             width: 100%;
             min-width: 50px;
         }
